@@ -4,6 +4,7 @@ import { Link, useLocation } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import { players } from '../data/data';
 import { sponsors } from '../data/sponsors';
+import { leagues } from '../data/leagues';
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);

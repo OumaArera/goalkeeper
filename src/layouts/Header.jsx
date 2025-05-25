@@ -117,7 +117,7 @@ const Header = () => {
                 <h1 className="text-lg sm:text-2xl lg:text-3xl font-extrabold bg-gradient-to-r from-emerald-400 via-emerald-300 to-green-400 bg-clip-text text-transparent leading-tight">
                   GOALKEEPERS ALLIANCE
                 </h1>
-                <p className="text-md sm:text-md text-gray-400 font-medium">
+                <p className="hidden md:block text-md sm:text-md text-gray-400 font-medium">
                   Elite Goalkeeper Database & Analytics Platform
                 </p>
               </div>
@@ -130,7 +130,7 @@ const Header = () => {
                   key={link.name}
                   to={link.path}
                   className={`
-                    px-4 py-2 text-md font-medium rounded-lg transition-all duration-200 relative
+                    px-4 py-2 text-xl font-medium rounded-lg transition-all duration-200 relative
                     ${activeLink === link.name 
                       ? 'text-emerald-400 bg-emerald-500/10 shadow-inner' 
                       : 'text-gray-300 hover:text-emerald-400 hover:bg-emerald-500/5'
@@ -146,24 +146,7 @@ const Header = () => {
             </div>
 
             {/* Desktop Action Buttons & Stats */}
-            <div className="hidden text-md md:flex items-center space-x-4">
-              {/* Quick Stats */}
-              <div className="flex items-center space-x-3 text-md">
-                <div className="text-center">
-                  <div className="font-bold text-emerald-400">{stats.clubs}</div>
-                  <div className="text-gray-400 uppercase tracking-wide">Clubs</div>
-                </div>
-                <div className="text-center">
-                  <div className="font-bold text-emerald-400">{leagues.length || 0}</div>
-                  <div className="text-gray-400 uppercase tracking-wide">Leagues</div>
-                </div>
-                <div className="text-center">
-                  <div className="font-bold text-emerald-400">{stats.sponsors}</div>
-                  <div className="text-gray-400 uppercase tracking-wide">Sponsors</div>
-                </div>
-              </div>
-
-              {/* Action Buttons */}
+            <div className="hidden text-md md:flex items-center ">
               <div className="flex items-center space-x-2">
                 <button 
                   onClick={handleAddPlayer}
@@ -222,35 +205,9 @@ const Header = () => {
             ))}
           </div>
 
-          {/* Mobile Stats */}
-          <div className="grid grid-cols-2 gap-4 mb-8">
-            <div className="text-center p-3 bg-slate-700/50 rounded-lg">
-              <div className="text-xl font-bold text-emerald-400">{stats.goalkeepers}</div>
-              <div className="text-xs text-gray-400 uppercase tracking-wide">Goalkeepers</div>
-            </div>
-            <div className="text-center p-3 bg-slate-700/50 rounded-lg">
-              <div className="text-xl font-bold text-emerald-400">{stats.clubs}</div>
-              <div className="text-xs text-gray-400 uppercase tracking-wide">Clubs</div>
-            </div>
-            <div className="text-center p-3 bg-slate-700/50 rounded-lg">
-              <div className="text-xl font-bold text-emerald-400">{stats.leagues}</div>
-              <div className="text-xs text-gray-400 uppercase tracking-wide">Leagues</div>
-            </div>
-            <div className="text-center p-3 bg-slate-700/50 rounded-lg">
-              <div className="text-xl font-bold text-emerald-400">{stats.sponsors}</div>
-              <div className="text-xs text-gray-400 uppercase tracking-wide">Sponsors</div>
-            </div>
-          </div>
 
           {/* Mobile Action Buttons */}
           <div className="space-y-3">
-            <Link 
-              to="/analytics"
-              onClick={closeMobileMenu}
-              className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 text-gray-300 font-medium rounded-lg hover:bg-slate-600/50 transition-all duration-200 block text-center"
-            >
-              📊 Analytics
-            </Link>
             <button 
               onClick={() => {
                 handleAddPlayer();

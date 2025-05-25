@@ -56,11 +56,11 @@ const Footer = () => {
                 <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-emerald-400 to-green-400 bg-clip-text text-transparent">
                   GOALKEEPERS ALLIANCE
                 </h2>
-                <p className="text-base sm:text-lg lg:text-xl text-gray-400">Elite Goalkeeper Platform</p>
+                <p className="text-base sm:text-lg lg:text-md text-gray-400">Elite Goalkeeper Platform</p>
               </div>
             </div>
             
-            <p className="text-gray-400 text-base sm:text-lg lg:text-xl mb-8 leading-relaxed">
+            <p className="text-gray-400 text-base sm:text-lg lg:text-md mb-8 leading-relaxed">
               The premier platform for goalkeeper analytics, scouting, and development. 
               Empowering goalkeepers, coaches, and clubs with data-driven insights and comprehensive player profiles.
             </p>

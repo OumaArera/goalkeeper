@@ -146,13 +146,9 @@ const Header = () => {
             </div>
 
             {/* Desktop Action Buttons & Stats */}
-            <div className="hidden md:flex items-center space-x-6">
+            <div className="hidden md:flex items-center space-x-4">
               {/* Quick Stats */}
               <div className="flex items-center space-x-4 text-md">
-                {/* <div className="text-center">
-                  <div className="font-bold text-emerald-400">{stats.goalkeepers}</div>
-                  <div className="text-gray-400 uppercase tracking-wide">Goalkeepers</div>
-                </div> */}
                 <div className="text-center">
                   <div className="font-bold text-emerald-400">{stats.clubs}</div>
                   <div className="text-gray-400 uppercase tracking-wide">Clubs</div>

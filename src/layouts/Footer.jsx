@@ -67,14 +67,14 @@ const Footer = () => {
 
             {/* Newsletter Signup */}
             <div className="mb-8">
-              <h4 className="text-white text-xl sm:text-2xl lg:text-3xl font-semibold mb-4">Stay Updated</h4>
+              <h4 className="text-white text-xl sm:text-xl lg:text-2xl font-semibold mb-4">Stay Updated</h4>
               <div className="flex flex-col sm:flex-row gap-4">
                 <input 
                   type="email" 
                   placeholder="Enter your email"
-                  className="flex-1 px-5 py-3 text-base sm:text-lg lg:text-xl bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-gray-400 focus:border-emerald-500/50 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition-all duration-200"
+                  className="flex-1 px-5 py-3 text-base sm:text-lg lg:text-md bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-gray-400 focus:border-emerald-500/50 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition-all duration-200"
                 />
-                <button className="px-8 py-3 text-base sm:text-lg lg:text-xl bg-gradient-to-r from-emerald-600 to-emerald-700 text-white font-medium rounded-lg hover:from-emerald-500 hover:to-emerald-600 transition-all duration-200 whitespace-nowrap shadow-lg hover:shadow-emerald-500/25">
+                <button className="px-8 py-3 text-base sm:text-lg lg:text-md bg-gradient-to-r from-emerald-600 to-emerald-700 text-white font-medium rounded-lg hover:from-emerald-500 hover:to-emerald-600 transition-all duration-200 whitespace-nowrap shadow-lg hover:shadow-emerald-500/25">
                   Subscribe
                 </button>
               </div>

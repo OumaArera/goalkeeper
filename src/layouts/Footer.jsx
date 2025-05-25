@@ -53,7 +53,7 @@ const Footer = () => {
                 </div>
               </div>
               <div>
-                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-emerald-400 to-green-400 bg-clip-text text-transparent">
+                <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-emerald-400 to-green-400 bg-clip-text text-transparent">
                   GOALKEEPERS ALLIANCE
                 </h2>
                 <p className="text-base sm:text-lg lg:text-xl text-gray-400">Elite Goalkeeper Platform</p>

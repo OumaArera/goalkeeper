@@ -28,7 +28,7 @@ const Footer = () => {
                 <div className="text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-bold text-emerald-400 mb-3">
                   {stat.number}
                 </div>
-                <div className="text-gray-400 font-medium text-base sm:text-lg lg:text-xl">
+                <div className="text-gray-400 font-medium text-base sm:text-lg lg:text-md">
                   {stat.label}
                 </div>
               </div>

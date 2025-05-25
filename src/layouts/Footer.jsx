@@ -82,13 +82,13 @@ const Footer = () => {
 
             {/* Social Links */}
             <div>
-              <h4 className="text-white text-xl sm:text-2xl lg:text-3xl font-semibold mb-4">Follow Us</h4>
+              <h4 className="text-white text-xl sm:text-xl lg:text-2xl font-semibold mb-4">Follow Us</h4>
               <div className="flex space-x-4">
                 {socialLinks.map((social, index) => (
                   <button
                     key={index}
                     onClick={() => navigate(social.href)}
-                    className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-slate-800/50 hover:bg-emerald-500/20 border border-slate-700 hover:border-emerald-500/50 rounded-xl flex items-center justify-center transition-all duration-200 group shadow-lg hover:shadow-emerald-500/25"
+                    className="w-12 h-12 sm:w-14 sm:h-14 lg:w-12 lg:h-12 bg-slate-800/50 hover:bg-emerald-500/20 border border-slate-700 hover:border-emerald-500/50 rounded-xl flex items-center justify-center transition-all duration-200 group shadow-lg hover:shadow-emerald-500/25"
                     title={social.name}
                   >
                     <social.icon className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 text-emerald-400 group-hover:text-white transition-all duration-200 group-hover:scale-110" />

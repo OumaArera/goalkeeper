@@ -102,13 +102,13 @@ const Footer = () => {
           <div className="lg:col-span-4 grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
             {/* Platform Links */}
             <div>
-              <h4 className="text-white text-xl sm:text-2xl lg:text-3xl font-semibold mb-6">Platform</h4>
+              <h4 className="text-white text-xl sm:text-xl lg:text-2xl font-semibold mb-6">Platform</h4>
               <ul className="space-y-4">
                 {footerLinks.platform.map((link, index) => (
                   <li key={index}>
                     <button
                       onClick={() => navigate(link.href)}
-                      className="text-gray-400 hover:text-emerald-400 text-base sm:text-lg lg:text-xl transition-colors duration-200 hover:translate-x-1 transform"
+                      className="text-gray-400 hover:text-emerald-400 text-base sm:text-lg lg:text-md transition-colors duration-200 hover:translate-x-1 transform"
                     >
                       {link.name}
                     </button>
@@ -119,13 +119,13 @@ const Footer = () => {
 
             {/* Resources Links */}
             <div>
-              <h4 className="text-white text-xl sm:text-2xl lg:text-3xl font-semibold mb-6">Resources</h4>
+              <h4 className="text-white text-xl sm:text-xl lg:text-2xl font-semibold mb-6">Resources</h4>
               <ul className="space-y-4">
                 {footerLinks.resources.map((link, index) => (
                   <li key={index}>
                     <button
                       onClick={() => navigate(link.href)}
-                      className="text-gray-400 hover:text-emerald-400 text-base sm:text-lg lg:text-xl transition-colors duration-200 hover:translate-x-1 transform"
+                      className="text-gray-400 hover:text-emerald-400 text-base sm:text-lg lg:text-md transition-colors duration-200 hover:translate-x-1 transform"
                     >
                       {link.name}
                     </button>
@@ -136,13 +136,13 @@ const Footer = () => {
 
             {/* Support Links */}
             <div>
-              <h4 className="text-white text-xl sm:text-2xl lg:text-3xl font-semibold mb-6">Support</h4>
+              <h4 className="text-white text-xl sm:text-xl lg:text-2xl font-semibold mb-6">Support</h4>
               <ul className="space-y-4">
                 {footerLinks.support.map((link, index) => (
                   <li key={index}>
                     <button
                       onClick={() => navigate(link.href)}
-                      className="text-gray-400 hover:text-emerald-400 text-base sm:text-lg lg:text-xl transition-colors duration-200 hover:translate-x-1 transform"
+                      className="text-gray-400 hover:text-emerald-400 text-base sm:text-lg lg:text-md transition-colors duration-200 hover:translate-x-1 transform"
                     >
                       {link.name}
                     </button>
@@ -153,13 +153,13 @@ const Footer = () => {
 
             {/* Legal Links */}
             <div>
-              <h4 className="text-white text-xl sm:text-2xl lg:text-3xl font-semibold mb-6">Legal</h4>
+              <h4 className="text-white text-xl sm:text-xl lg:text-2xl font-semibold mb-6">Legal</h4>
               <ul className="space-y-4">
                 {footerLinks.legal.map((link, index) => (
                   <li key={index}>
                     <button
                       onClick={() => navigate(link.href)}
-                      className="text-gray-400 hover:text-emerald-400 text-base sm:text-lg lg:text-xl transition-colors duration-200 hover:translate-x-1 transform"
+                      className="text-gray-400 hover:text-emerald-400 text-base sm:text-lg lg:text-md transition-colors duration-200 hover:translate-x-1 transform"
                     >
                       {link.name}
                     </button>

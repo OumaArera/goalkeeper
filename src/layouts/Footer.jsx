@@ -14,7 +14,7 @@ const Footer = () => {
       <div className="border-b border-slate-800/50">
         <div className="max-w-8xl mx-auto px-6 sm:px-8 lg:px-12 py-16">
           <div className="text-center mb-12">
-            <h3 className="text-3xl sm:text-4xl lg:text-4xl xl:text-5xl font-bold bg-gradient-to-r from-emerald-400 to-green-400 bg-clip-text text-transparent mb-4">
+            <h3 className="text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-bold bg-gradient-to-r from-emerald-400 to-green-400 bg-clip-text text-transparent mb-4">
               Growing the Goalkeeper Community
             </h3>
             <p className="text-gray-400 text-lg sm:text-xl lg:text-2xl max-w-4xl mx-auto leading-relaxed">

@@ -129,7 +129,7 @@ const Header = () => {
                   key={link.name}
                   to={link.path}
                   className={`
-                    px-4 py-2 text-xl font-medium rounded-lg transition-all duration-200 relative
+                    px-4 py-2 text-md font-medium rounded-lg transition-all duration-200 relative
                     ${activeLink === link.name 
                       ? 'text-emerald-400 bg-emerald-500/10 shadow-inner' 
                       : 'text-gray-300 hover:text-emerald-400 hover:bg-emerald-500/5'

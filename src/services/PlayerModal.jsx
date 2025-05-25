@@ -80,6 +80,10 @@ const PlayerModal = ({ player, onClose, setActiveView, activeView }) => {
                     <Trophy className="w-4 h-4" />
                     <span>{player.bioData.internationalCaps} caps</span>
                   </span>
+                  <span className="flex items-center justify-center space-x-1">
+                    <Shirt className="w-4 h-4" />
+                    <span>{player.bioData.jersey || 0} Jersey</span>
+                  </span>
                 </div>
               </div>
             </div>

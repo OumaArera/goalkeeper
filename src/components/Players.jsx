@@ -10,7 +10,7 @@ const Players = () => {
   const [selectedPosition, setSelectedPosition] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedPlayer, setSelectedPlayer] = useState(null);
-  const [activeView, setActiveView] = useState("overview"); // overview or stats
+  const [activeView, setActiveView] = useState("overview");
   const playersPerPage = 6;
 
   // Get unique clubs from players data

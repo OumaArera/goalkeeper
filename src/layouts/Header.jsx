@@ -116,7 +116,7 @@ const Header = () => {
                 <h1 className="text-lg sm:text-2xl lg:text-4xl font-extrabold bg-gradient-to-r from-emerald-400 via-emerald-300 to-green-400 bg-clip-text text-transparent leading-tight">
                   GOALKEEPERS ALLIANCE
                 </h1>
-                <p className="text-xs sm:text-md text-gray-400 font-medium">
+                <p className="text-md sm:text-xl text-gray-400 font-medium">
                   Elite Goalkeeper Database & Analytics Platform
                 </p>
               </div>

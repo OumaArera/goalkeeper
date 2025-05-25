@@ -16,6 +16,7 @@ export const  players= [
         "favoriteFoot": "Right",
         "internationalCaps": 12,
         "position": "Goalkeeper",
+        "jersey": 28,
         "image": fredrick
       },
       "formerClubs": [
@@ -142,6 +143,7 @@ export const  players= [
         "favoriteFoot": "Right",
         "internationalCaps": 8,
         "position": "Goalkeeper",
+        "jersey": 28,
         "image": lazaro
       },
       "formerClubs": [

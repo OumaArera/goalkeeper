@@ -1,5 +1,5 @@
 import React from "react";
-import { User, Trophy, Target, Calendar, Users, Activity, Shield, Award } from "lucide-react";
+import { User, Trophy, Target, Calendar, Shirt, Users, Activity, Shield, Award } from "lucide-react";
 import { getTotalStats, calculateAge } from "../utils/getTotalStats";
 
 
@@ -44,6 +44,10 @@ const PlayerModal = ({ player, onClose, setActiveView, activeView }) => {
                     <span className="flex items-center justify-center space-x-1">
                       <Trophy className="w-4 h-4" />
                       <span>{player.bioData.internationalCaps} caps</span>
+                    </span>
+                    <span className="flex items-center justify-center space-x-1">
+                      <Shirt className="w-4 h-4" />
+                      <span>{player.bioData.jersey} Jersey</span>
                     </span>
                   </div>
                 </div>

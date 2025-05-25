@@ -158,7 +158,7 @@ const Header = () => {
                   <div className="text-gray-400 uppercase tracking-wide">Clubs</div>
                 </div>
                 <div className="text-center">
-                  <div className="font-bold text-emerald-400">{stats.leagues}</div>
+                  <div className="font-bold text-emerald-400">{leagues.length || 0}</div>
                   <div className="text-gray-400 uppercase tracking-wide">Leagues</div>
                 </div>
                 <div className="text-center">

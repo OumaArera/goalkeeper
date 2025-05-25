@@ -17,7 +17,7 @@ const Footer = () => {
             <h3 className="text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-bold bg-gradient-to-r from-emerald-400 to-green-400 bg-clip-text text-transparent mb-4">
               Growing the Goalkeeper Community
             </h3>
-            <p className="text-gray-400 text-lg sm:text-xl lg:text-2xl max-w-4xl mx-auto leading-relaxed">
+            <p className="text-gray-400 text-lg sm:text-md lg:text-xl max-w-4xl mx-auto leading-relaxed">
               Join thousands of goalkeepers, coaches, and clubs in the world's largest goalkeeper database and analytics platform.
             </p>
           </div>
@@ -25,7 +25,7 @@ const Footer = () => {
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
             {stats.map((stat, index) => (
               <div key={index} className="flex flex-col items-center justify-center text-center">
-                <div className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-emerald-400 mb-3">
+                <div className="text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-bold text-emerald-400 mb-3">
                   {stat.number}
                 </div>
                 <div className="text-gray-400 font-medium text-base sm:text-lg lg:text-xl">

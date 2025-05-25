@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from "react";
-import { Search, Filter, ChevronLeft, ChevronRight, User, BarChart3, Trophy, Target, Calendar, MapPin, Users, Activity, Shield, Award } from "lucide-react";
+import { Search, Filter, ChevronLeft, ChevronRight, User, BarChart3 } from "lucide-react";
 import { players } from "../data/data";
 import PlayerModal from "../services/PlayerModal";
 import { getTotalStats, calculateAge } from "../utils/getTotalStats";

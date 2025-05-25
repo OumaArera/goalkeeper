@@ -114,10 +114,10 @@ const Header = () => {
               </div>
               {/* Updated to show on all devices */}
               <div className="block">
-                <h1 className="text-lg sm:text-2xl lg:text-4xl font-extrabold bg-gradient-to-r from-emerald-400 via-emerald-300 to-green-400 bg-clip-text text-transparent leading-tight">
+                <h1 className="text-lg sm:text-2xl lg:text-3xl font-extrabold bg-gradient-to-r from-emerald-400 via-emerald-300 to-green-400 bg-clip-text text-transparent leading-tight">
                   GOALKEEPERS ALLIANCE
                 </h1>
-                <p className="text-md sm:text-xl text-gray-400 font-medium">
+                <p className="text-md sm:text-md text-gray-400 font-medium">
                   Elite Goalkeeper Database & Analytics Platform
                 </p>
               </div>
@@ -130,7 +130,7 @@ const Header = () => {
                   key={link.name}
                   to={link.path}
                   className={`
-                    px-4 py-2 text-xl font-medium rounded-lg transition-all duration-200 relative
+                    px-4 py-2 text-md font-medium rounded-lg transition-all duration-200 relative
                     ${activeLink === link.name 
                       ? 'text-emerald-400 bg-emerald-500/10 shadow-inner' 
                       : 'text-gray-300 hover:text-emerald-400 hover:bg-emerald-500/5'
@@ -146,7 +146,7 @@ const Header = () => {
             </div>
 
             {/* Desktop Action Buttons & Stats */}
-            <div className="hidden md:flex items-center space-x-4">
+            <div className="hidden text-md md:flex items-center space-x-4">
               {/* Quick Stats */}
               <div className="flex items-center space-x-3 text-md">
                 <div className="text-center">

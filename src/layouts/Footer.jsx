@@ -9,7 +9,7 @@ const Footer = () => {
 
 
   return (
-    <footer className="relative bottom-0 -top-8 bg-gradient-to-b from-slate-900 to-slate-950 border-t border-emerald-500/20">
+    <footer className="mt-[-2rem] bg-gradient-to-b from-slate-900 to-slate-950 border-t border-emerald-500/20">
       {/* Stats Section */}
       <div className="border-b border-slate-800/50">
         <div className="max-w-8xl mx-auto px-6 sm:px-8 lg:px-12 py-16">

@@ -89,15 +89,11 @@ const Leagues = () => {
           </div>
           
           <h1 className="text-5xl md:text-6xl font-extrabold text-white mb-6 tracking-tight leading-tight">
-            Football
-            <span className="block bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+            Football{" "}
+            <span className="bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
               Leagues
             </span>
           </h1>
-          
-          <p className="text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-            Discover professional football leagues and competitions from around the world
-          </p>
         </div>
 
         {/* Search and Filters */}

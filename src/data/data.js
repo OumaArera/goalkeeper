@@ -161,11 +161,6 @@ export const  players= [
           "name": "Wazito FC",
           "country": "Kenya",
           "league": "FKF Premier League"
-        },
-        {
-          "name": "Dago FC",
-          "country": "Kenya",
-          "league": "FKF Premier League"
         }
       ],
       "styleOfPlay": [

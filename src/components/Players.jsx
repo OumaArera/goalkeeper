@@ -51,24 +51,15 @@ const Players = () => {
 
   return (
     <div className="relative -top-8 min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-8">
-      {/* Background Effects */}
-      {/* <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-96 h-96 bg-emerald-500 rounded-full mix-blend-screen filter blur-3xl opacity-25 animate-pulse"></div>
-        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-emerald-400 rounded-full mix-blend-screen filter blur-3xl opacity-20 animate-pulse" style={{ animationDelay: '1.5s' }}></div>
-      </div> */}
-
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-5xl md:text-6xl font-extrabold text-white mb-6 tracking-tight leading-tight">
-            Goalkeepers
-            <span className="block bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+            Goalkeepers{"  "}
+            <span className="bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
               Database
             </span>
           </h1>
-          <p className="text-2xl text-gray-300 max-w-2xl mx-auto leading-relaxed">
-            Explore comprehensive profiles and statistics of professional goalkeepers
-          </p>
         </div>
 
         {/* Search and Filters */}
@@ -124,70 +115,80 @@ const Players = () => {
         </div>
 
         {/* Players Grid */}
-        <div className="grid md:grid-cols-2 gap-8 mb-8">
+        <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8 mb-8">
           {paginatedPlayers.map((player, index) => {
             const totalStats = getTotalStats(player);
             return (
               <div
                 key={index}
-                className="bg-black/30 backdrop-blur-lg rounded-2xl p-8 border border-white/10 hover:border-white/20 transition-all duration-300 hover:scale-105 min-h-[320px]"
+                className="bg-black/30 backdrop-blur-lg rounded-2xl overflow-hidden border border-white/10 hover:border-white/20 transition-all duration-300 hover:scale-105 min-h-[500px]"
               >
-                {/* Player Header */}
-                <div className="flex items-center space-x-6 mb-8">
-                  <div className="w-28 h-28 rounded-full overflow-hidden border-2 border-white/20 flex-shrink-0">
-                    <img
-                      src={player.bioData.image}
-                      alt={`${player.bioData.firstName} ${player.bioData.lastName}`}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-3xl font-extrabold text-white leading-snug mb-2">
+                {/* Large Player Image */}
+                <div className="relative h-100 overflow-hidden">
+                  <img
+                    src={player.bioData.image}
+                    alt={`${player.bioData.firstName} ${player.bioData.lastName}`}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                  
+                  {/* Player Name Overlay */}
+                  <div className="absolute bottom-4 left-4 right-4">
+                    <div className="bg-gray-900">
+                    <h3 className="text-2xl md:text-3xl font-extrabold text-white leading-tight mb-1">
                       {player.bioData.firstName} {player.bioData.lastName}
                     </h3>
-                    <p className="text-gray-300 text-xl mb-1">{player.bioData.position}</p>
-                    <p className="text-gray-400 text-lg">{calculateAge(player.bioData.dateOfBirth)} years old</p>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-cyan-300 text-lg font-medium">{player.bioData.position}</p>
+                        <p className="text-gray-300 text-base">{calculateAge(player.bioData.dateOfBirth)} years old</p>
+                      </div>
+                      <div className="bg-black/40 backdrop-blur-sm rounded-lg px-3 py-1">
+                        <span className="text-green-400 font-bold text-lg">{player.bioData.internationalCaps}</span>
+                        <span className="text-gray-300 text-sm ml-1">caps</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
-                {/* Quick Stats */}
-                <div className="grid grid-cols-3 gap-6 mb-8">
-                  <div className="text-center">
-                    <div className="text-4xl font-extrabold text-cyan-400 mb-2">{totalStats.totalAppearances}</div>
-                    <div className="text-gray-300 text-base font-medium">Appearances</div>
+                {/* Card Content */}
+                <div className="p-6">
+                  {/* Quick Stats */}
+                  <div className="grid grid-cols-2 gap-4 mb-6">
+                    <div className="text-center bg-white/5 rounded-lg p-4">
+                      <div className="text-3xl font-extrabold text-cyan-400 mb-1">{totalStats.totalAppearances}</div>
+                      <div className="text-gray-300 text-sm font-medium">Appearances</div>
+                    </div>
+                    <div className="text-center bg-white/5 rounded-lg p-4">
+                      <div className="text-3xl font-bold text-purple-400 mb-1">{totalStats.totalCleanSheets}</div>
+                      <div className="text-gray-300 text-sm font-medium">Clean Sheets</div>
+                    </div>
                   </div>
-                  <div className="text-center">
-                    <div className="text-4xl font-bold text-purple-400 mb-2">{totalStats.totalCleanSheets}</div>
-                    <div className="text-gray-400 text-base">Clean Sheets</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-4xl font-bold text-green-400 mb-2">{player.bioData.internationalCaps}</div>
-                    <div className="text-gray-400 text-base">Caps</div>
-                  </div>
-                </div>
 
-                {/* Action Buttons */}
-                <div className="flex space-x-3">
-                  <button
-                    onClick={() => {
-                      setSelectedPlayer(player);
-                      setActiveView("overview");
-                    }}
-                    className="flex-1 bg-gradient-to-r from-cyan-500 to-purple-500 text-white py-4 px-6 rounded-lg font-medium transition-all hover:scale-105 hover:shadow-lg flex items-center justify-center space-x-3"
-                  >
-                    <User className="w-5 h-5" />
-                    <span className="text-lg font-semibold">Overview</span>
-                  </button>
-                  <button
-                    onClick={() => {
-                      setSelectedPlayer(player);
-                      setActiveView("stats");
-                    }}
-                    className="flex-1 border-2 border-white/30 text-white py-4 px-6 rounded-lg font-medium transition-all hover:bg-white/10 hover:border-white/50 flex items-center justify-center space-x-3"
-                  >
-                    <BarChart3 className="w-5 h-5" />
-                    <span className="text-lg">Stats</span>
-                  </button>
+                  {/* Action Buttons */}
+                  <div className="flex space-x-3">
+                    <button
+                      onClick={() => {
+                        setSelectedPlayer(player);
+                        setActiveView("overview");
+                      }}
+                      className="flex-1 bg-gradient-to-r from-cyan-500 to-purple-500 text-white py-3 px-4 rounded-lg font-medium transition-all hover:scale-105 hover:shadow-lg flex items-center justify-center space-x-2"
+                    >
+                      <User className="w-4 h-4" />
+                      <span className="font-semibold">Overview</span>
+                    </button>
+                    <button
+                      onClick={() => {
+                        setSelectedPlayer(player);
+                        setActiveView("stats");
+                      }}
+                      className="flex-1 border-2 border-white/30 text-white py-3 px-4 rounded-lg font-medium transition-all hover:bg-white/10 hover:border-white/50 flex items-center justify-center space-x-2"
+                    >
+                      <BarChart3 className="w-4 h-4" />
+                      <span>Stats</span>
+                    </button>
+                  </div>
                 </div>
               </div>
             );

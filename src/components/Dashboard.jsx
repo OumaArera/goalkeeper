@@ -43,11 +43,6 @@ const Dashboard = () => {
 
   return (
     <div className="relative -top-8 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
-        {/* <div className="fixed inset-0 overflow-hidden pointer-events-none">
-            <div className="absolute -top-40 -right-40 w-96 h-96 bg-emerald-500 rounded-full mix-blend-screen filter blur-3xl opacity-25 animate-pulse"></div>
-            <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-emerald-400 rounded-full mix-blend-screen filter blur-3xl opacity-20 animate-pulse" style={{ animationDelay: '1.5s' }}></div>
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-emerald-300 rounded-full mix-blend-screen filter blur-2xl opacity-10 animate-pulse" style={{ animationDelay: '3s' }}></div>
-        </div> */}
       {/* Hero Section */}
       <section className="relative z-10 pt-20 pb-32">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

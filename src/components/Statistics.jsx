@@ -20,24 +20,15 @@ const Statistics = () => {
 
   return (
     <div className="relative -top-8 min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-8">
-      {/* Background Effects */}
-      {/* <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-96 h-96 bg-emerald-500 rounded-full mix-blend-screen filter blur-3xl opacity-25 animate-pulse"></div>
-        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-emerald-400 rounded-full mix-blend-screen filter blur-3xl opacity-20 animate-pulse" style={{ animationDelay: '1.5s' }}></div>
-      </div> */}
-
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-5xl md:text-6xl font-extrabold text-white mb-6 tracking-tight leading-tight">
-            Goalkeeper
-            <span className="block bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+            Goalkeeper{" "}
+            <span className="bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
               Analytics
             </span>
           </h1>
-          <p className="text-2xl text-gray-300 max-w-2xl mx-auto leading-relaxed">
-            Comprehensive statistical analysis and insights for goalkeeper evaluation
-          </p>
         </div>
 
         {/* Navigation Tabs */}

@@ -1,5 +1,6 @@
 import fredrick from '../assets/fred.png';
 import lazaro from '../assets/lazaro.png';
+import brian from '../assets/brian.png';
 
 
 export const  players= [
@@ -251,6 +252,128 @@ export const  players= [
         "passesPerMatch": 13.8,
         "accurateLongBalls": 276
       }
+    },
+    {
+    "bioData": {
+      "firstName": "Brian",
+      "middleNames": "Opiyo",
+      "lastName": "Olangó",
+      "dateOfBirth": "2003-11-03",
+      "phoneNumber": "+254791361333",
+      "email": "brianopiyoolango55@gmail.com",
+      "height": "1.8",
+      "weight": "70kg",
+      "favoriteFoot": "Right",
+      "internationalCaps": 4,
+      "position": "Goalkeeper",
+      "jersey": 1,
+      "image": brian
+    },
+    "formerClubs": [
+      {
+        "name": "Mathare United FC",
+        "country": "Kenya",
+        "league": "FKF Premier League"
+      },
+      {
+        "name": "Kariobangi Sharks FC",
+        "country": "Kenya",
+        "league": "FKF Premier League"
+      },
+      {
+        "name": "Wadi Degla Soccer School",
+        "country": "Egypt",
+        "league": "Youth Academy"
+      },
+      {
+        "name": "Kenya Commercial Bank FC",
+        "country": "Kenya",
+        "league": "FKF Premier League"
+      }
+    ],
+    "styleOfPlay": [
+      "Commanding presence in the penalty area",
+      "Quick reflexes and shot-stopping",
+      "Leadership and defensive communication",
+      "Accurate distribution and initiating attacks"
+    ],
+    "experience": [
+      {
+        "leagueName": "Kenyan Premier League",
+        "appearances": 48
+      },
+      {
+        "leagueName": "Youth International Tournaments",
+        "appearances": 12
+      }
+    ],
+    "kenyaPremierLeagueRecord": [
+      {
+        "club": "Mathare United FC",
+        "position": "Goalkeeper",
+        "appearances": 20,
+        "cleanSheets": 8,
+        "goals": 0,
+        "assists": 0
+      },
+      {
+        "club": "Kariobangi Sharks FC",
+        "position": "Goalkeeper",
+        "appearances": 18,
+        "cleanSheets": 7,
+        "goals": 0,
+        "assists": 1
+      },
+      {
+        "club": "Kenya Commercial Bank FC",
+        "position": "Goalkeeper",
+        "appearances": 10,
+        "cleanSheets": 5,
+        "goals": 0,
+        "assists": 0
+      }
+    ],
+    "honorsAndAwards": [
+      {
+        "saveOfTheMonth": "N/A",
+        "season": "2017",
+        "award": "Best Goalkeeper – Chapa Dimba Tournament"
+      },
+      {
+        "saveOfTheMonth": "N/A",
+        "season": "2018",
+        "award": "Best Goalkeeper – KPL U-20 2nd Runners Up"
+      }
+    ],
+    "goalKeeping": {
+      "saves": 160,
+      "penaltiesSaved": 5,
+      "punches": 40,
+      "highClaims": 35,
+      "catches": 50,
+      "sweeperClearances": 18,
+      "throwOuts": 80,
+      "goalKicks": 110
+    },
+    "discipline": {
+      "yellowCards": 2,
+      "redCards": 0,
+      "fouls": 3
+    },
+    "defense": {
+      "cleanSheets": 20,
+      "goalsConceded": 35,
+      "errorsLeadingToGoal": 3,
+      "ownGoals": 0
+    },
+    "teamPlay": {
+      "goals": 0,
+      "assists": 1,
+      "passes": 980,
+      "passesPerMatch": 12.5,
+      "accurateLongBalls": 220
     }
+  }
+
   ]
 

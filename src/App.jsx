@@ -6,9 +6,9 @@ import Footer from './layouts/Footer';
 import Dashboard from './components/Dashboard';
 import Players from './components/Players';
 import Statistics from './components/Statistics';
-import Sponsors from './components/Sponsors';
+import Partners from './components/Partners';
 import Leagues from './components/Leagues';
-
+import Items from './components/Items';
 function App() {
   // const [count, setCount] = useState(0)
 
@@ -21,7 +21,9 @@ function App() {
             <Route path="/" element={<Dashboard />} />
             <Route path="/players" element={<Players />} />
             <Route path="/statistics" element={<Statistics />} />
-            <Route path="/sponsors" element={<Sponsors />} />
+            <Route path="/partners" element={<Partners />} />
+            <Route path="/our-shop" element={<Items />} />
+            
             <Route path="/leagues" element={<Leagues />} />
           </Routes>
         </main>

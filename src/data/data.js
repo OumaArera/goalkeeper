@@ -1,5 +1,5 @@
-import fredrick from '../assets/fred.png';
-import lazaro from '../assets/lazaro.png';
+import fredrick from '../assets/fredrick.png';
+import lazarus from '../assets/lazarus.png';
 import brian from '../assets/brian.png';
 
 
@@ -145,7 +145,7 @@ export const  players= [
         "internationalCaps": 8,
         "position": "Goalkeeper",
         "jersey": 28,
-        "image": lazaro
+        "image": lazarus
       },
       "formerClubs": [
         {

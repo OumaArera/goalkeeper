@@ -2,7 +2,7 @@ import React from "react";
 import { Heart, Sparkles, Award, Users } from "lucide-react";
 import { sponsors } from "../data/sponsors";
 
-const Sponsors = () => {
+const Partners = () => {
   return (
     <div className="relative -top-8 min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-8">
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -16,12 +16,12 @@ const Sponsors = () => {
           <h1 className="text-5xl md:text-6xl font-extrabold text-white mb-6 tracking-tight leading-tight">
             Our Amazing{" "}
             <span className="bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
-              Sponsors
+              Partners
             </span>
           </h1>
           
           <p className="text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed mb-8">
-            Proudly supported by industry-leading partners who believe in excellence and innovation
+            We have partnered with industry-leading partners who believe in excellence and innovation
           </p>
           
           <div className="flex items-center justify-center space-x-8 text-gray-400">
@@ -44,13 +44,13 @@ const Sponsors = () => {
               A Heartfelt Thank You
             </h2>
             <p className="text-xl text-gray-300 leading-relaxed mb-8">
-              Our sponsors are more than partners—they're champions of our vision. Their unwavering support 
+              Our partners are more than partners—they're champions of our vision. Their unwavering support 
               enables us to showcase exceptional goalkeeper talent, advance sports analytics, and build bridges 
               between emerging players and professional opportunities.
             </p>
             <div className="flex items-center justify-center space-x-2 text-emerald-400">
               <Heart className="w-6 h-6 fill-current" />
-              <span className="text-lg font-semibold">Made possible by their generous support</span>
+              <span className="text-lg font-semibold">Made possible by their exceptional support</span>
               <Heart className="w-6 h-6 fill-current" />
             </div>
           </div>
@@ -139,7 +139,7 @@ const Sponsors = () => {
               the beautiful game and support the next generation of goalkeeping talent.
             </p>
             <button className="bg-gradient-to-r from-cyan-500 to-purple-500 text-white px-8 py-4 rounded-lg font-bold text-lg hover:scale-105 transition-transform duration-300 hover:shadow-lg hover:shadow-cyan-500/25">
-              Become a Sponsor
+              Become a Partner
             </button>
           </div>
         </div>
@@ -148,4 +148,4 @@ const Sponsors = () => {
   );
 };
 
-export default Sponsors;
+export default Partners;

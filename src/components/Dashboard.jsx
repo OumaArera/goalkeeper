@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
-import { Users, BarChart3, Trophy, Target, ArrowRight, Star, Shield, Award } from "lucide-react";
+import { Users, BarChart3, Trophy, Target, ArrowRight, Star, Shield, Award, ShoppingCart, Heart } from "lucide-react";
 import { players } from "../data/data";
 import landing_goalkeeper from "../assets/landing_goalkeeper.jpeg";
 
@@ -60,6 +60,16 @@ const Dashboard = () => {
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <button 
+                  onClick={() => navigate('/our-shop')}
+                  className="group bg-gradient-to-r from-green-500 to-emerald-500 text-white px-8 py-4 rounded-lg font-semibold transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-emerald-500/25 ring-2 ring-green-400/30"
+                >
+                  <span className="flex items-center justify-center space-x-2">
+                    <ShoppingCart className="w-5 h-5" />
+                    <span>Support Our Goalkeepers</span>
+                    <Heart className="w-4 h-4 text-red-300" />
+                  </span>
+                </button>
+                <button 
                   onClick={() => navigate('/players')}
                   className="group bg-gradient-to-r from-cyan-500 to-purple-500 text-white px-8 py-4 rounded-lg font-semibold transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/25"
                 >
@@ -67,12 +77,6 @@ const Dashboard = () => {
                     <span>Explore Players</span>
                     <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
                   </span>
-                </button>
-                <button 
-                  onClick={() => navigate('/statistics')}
-                  className="border-2 border-white/30 text-white px-8 py-4 rounded-lg font-semibold transition-all duration-300 hover:bg-white/10 hover:border-white/50 backdrop-blur-sm"
-                >
-                  View Statistics
                 </button>
               </div>
             </div>
@@ -94,6 +98,44 @@ const Dashboard = () => {
         </div>
       </section>
 
+      {/* Priority Support Section */}
+      <section className="relative z-10 pb-20">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className={`transform transition-all duration-1000 delay-500 ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
+            <div className="bg-gradient-to-r from-green-500/20 to-emerald-500/20 backdrop-blur-lg rounded-3xl p-8 border-2 border-green-400/30 hover:border-green-400/50 transition-all duration-300">
+              <div className="text-center">
+                <div className="w-20 h-20 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <ShoppingCart className="w-10 h-10 text-white" />
+                </div>
+                <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+                  Support Our Elite Goalkeepers
+                </h2>
+                <p className="text-lg text-gray-300 mb-6 max-w-3xl mx-auto">
+                  Every purchase directly supports the development, training, and career advancement of our professional goalkeepers. 
+                  Your contribution helps them reach new heights in their football journey.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-4">
+                  <button 
+                    onClick={() => navigate('/our-shop')}
+                    className="group bg-gradient-to-r from-green-500 to-emerald-500 text-white px-10 py-4 rounded-xl font-bold text-lg transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-green-500/25 ring-2 ring-green-400/40"
+                  >
+                    <span className="flex items-center justify-center space-x-3">
+                      <ShoppingCart className="w-6 h-6" />
+                      <span>Shop & Support Now</span>
+                      <Heart className="w-5 h-5 text-red-300 animate-pulse" />
+                    </span>
+                  </button>
+                  <div className="flex items-center space-x-2 text-green-300">
+                    <Shield className="w-5 h-5" />
+                    <span className="text-sm">100% goes to goalkeeper development</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Stats Section */}
       <section className="relative z-10 pb-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -103,7 +145,7 @@ const Dashboard = () => {
               return (
                 <div
                   key={stat.label}
-                  className={`transform transition-all duration-700 delay-${index * 100} ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
+                  className={`transform transition-all duration-700 delay-${index * 100 + 600} ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
                 >
                   <div className="bg-black/30 backdrop-blur-lg rounded-2xl p-6 border border-white/10 hover:border-white/20 transition-all duration-300 hover:scale-105">
                     <div className={`w-12 h-12 bg-gradient-to-r ${stat.color} rounded-xl flex items-center justify-center mb-4`}>
@@ -135,7 +177,7 @@ const Dashboard = () => {
               return (
                 <div
                   key={feature.title}
-                  className={`group transform transition-all duration-700 delay-${index * 200} ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
+                  className={`group transform transition-all duration-700 delay-${index * 200 + 800} ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
                 >
                   <div className="bg-black/30 backdrop-blur-lg rounded-2xl p-8 border border-white/10 hover:border-white/20 transition-all duration-300 hover:scale-105 h-full">
                     <div className={`w-16 h-16 bg-gradient-to-r ${feature.gradient} rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
@@ -160,6 +202,15 @@ const Dashboard = () => {
               Discover detailed player profiles, advanced statistics, and comprehensive performance analytics.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <button 
+                onClick={() => navigate('/our-shop')}
+                className="bg-gradient-to-r from-green-500 to-emerald-500 text-white px-8 py-4 rounded-lg font-semibold transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-green-500/25 ring-1 ring-green-400/30"
+              >
+                <span className="flex items-center justify-center space-x-2">
+                  <ShoppingCart className="w-5 h-5" />
+                  <span>Support Goalkeepers</span>
+                </span>
+              </button>
               <button 
                 onClick={() => navigate('/players')}
                 className="bg-gradient-to-r from-cyan-500 to-purple-500 text-white px-8 py-4 rounded-lg font-semibold transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/25"

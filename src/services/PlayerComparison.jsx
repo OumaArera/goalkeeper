@@ -1,97 +1,115 @@
 import React, { useState, useMemo } from "react";
-import { ChevronDown, ChevronUp } from "lucide-react";
-import { calculateAge, getTotalStats } from "../utils/statsUtil";
+import { Trophy } from "lucide-react";
+
 
 const PlayerComparison = ({ players }) => {
-  const [expandedPlayer, setExpandedPlayer] = useState(null);
+  const [selectedPlayers, setSelectedPlayers] = useState([]);
   
-  const comparisonData = useMemo(() => {
-    return players.map(player => {
-      const totalStats = getTotalStats(player);
-      return {
-        ...player,
-        totalStats,
-        cleanSheetRate: (totalStats.totalCleanSheets / totalStats.totalAppearances * 100) || 0,
-        age: calculateAge(player.bioData.dateOfBirth)
-      };
-    }).sort((a, b) => b.cleanSheetRate - a.cleanSheetRate);
-  }, [players]);
+  const handlePlayerSelect = (playerId) => {
+    if (selectedPlayers.includes(playerId)) {
+      setSelectedPlayers(selectedPlayers.filter(id => id !== playerId));
+    } else if (selectedPlayers.length < 3) {
+      setSelectedPlayers([...selectedPlayers, playerId]);
+    }
+  };
+
+  const comparisonData = selectedPlayers.map(playerId => {
+    const player = players.find(p => p.id === playerId);
+    return {
+      id: player.id,
+      name: `${player.user?.firstName} ${player.user?.lastName}`,
+      saves: player.goalkeepingStats?.saves || 0,
+      cleanSheets: player.defensiveStats?.cleanSheets || 0,
+      penaltiesSaved: player.goalkeepingStats?.penaltiesSaved || 0,
+      goalsConceded: player.defensiveStats?.goalsConceded || 0,
+      errors: player.defensiveStats?.errorsLeadingToGoal || 0,
+      totalAppearances: player.kplRecords.reduce((sum, record) => sum + record.appearances, 0)
+    };
+  });
 
   return (
-    <div className="bg-black/30 backdrop-blur-lg p-8 rounded-2xl border border-white/10">
-      <h3 className="text-2xl font-bold text-white mb-6">Player Comparison</h3>
-      <div className="space-y-4">
-        {comparisonData.map((player, index) => (
-          <div key={index} className="border border-white/10 rounded-lg overflow-hidden">
-            <div 
-              className="p-6 cursor-pointer hover:bg-white/5 transition-colors"
-              onClick={() => setExpandedPlayer(expandedPlayer === index ? null : index)}
-            >
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 rounded-full overflow-hidden border border-white/20">
-                    <img
-                      src={player.bioData.image || "/api/placeholder/48/48"}
-                      alt={`${player.bioData.firstName} ${player.bioData.lastName}`}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div>
-                    <h4 className="text-white font-bold text-lg">
-                      {player.bioData.firstName} {player.bioData.lastName}
-                    </h4>
-                    <p className="text-gray-400">{player.age} years • {player.totalStats.totalAppearances} appearances</p>
-                  </div>
+    <div className="space-y-6">
+      <div className="bg-black/30 backdrop-blur-lg p-6 rounded-2xl border border-white/10">
+        <h2 className="text-2xl font-bold text-white mb-6 flex items-center">
+          <Trophy className="w-6 h-6 mr-3 text-cyan-400" />
+          Player Comparison
+        </h2>
+        
+        <div className="mb-6">
+          <h3 className="text-white font-semibold mb-3">Select players to compare (max 3):</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+            {players.map(player => (
+              <button
+                key={player.id}
+                onClick={() => handlePlayerSelect(player.id)}
+                className={`p-3 rounded-lg border text-left transition-all ${
+                  selectedPlayers.includes(player.id)
+                    ? 'bg-gradient-to-r from-cyan-500 to-purple-500 border-transparent text-white'
+                    : 'bg-white/5 border-white/10 text-gray-300 hover:bg-white/10'
+                }`}
+                disabled={!selectedPlayers.includes(player.id) && selectedPlayers.length >= 3}
+              >
+                <div className="font-medium">{`${player.user?.firstName} ${player.user?.lastName}`}</div>
+                <div className="text-sm opacity-75">
+                  {player.kplRecords.reduce((sum, record) => sum + record.appearances, 0)} appearances
                 </div>
-                <div className="flex items-center space-x-6">
-                  <div className="text-center">
-                    <div className="text-emerald-400 font-bold text-xl">{Math.round(player.cleanSheetRate)}%</div>
-                    <div className="text-gray-400 text-sm">Clean Sheet Rate</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-cyan-400 font-bold text-xl">{player.totalStats.totalCleanSheets}</div>
-                    <div className="text-gray-400 text-sm">Clean Sheets</div>
-                  </div>
-                  {expandedPlayer === index ? <ChevronUp className="w-5 h-5 text-gray-400" /> : <ChevronDown className="w-5 h-5 text-gray-400" />}
-                </div>
-              </div>
-            </div>
-            
-            {expandedPlayer === index && (
-              <div className="px-6 pb-6 border-t border-white/10 bg-white/5">
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-6">
-                  <div className="text-center">
-                    <div className="text-yellow-400 font-bold text-lg">{player.goalKeeping.saves}</div>
-                    <div className="text-gray-400 text-sm">Total Saves</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-purple-400 font-bold text-lg">{player.goalKeeping.penaltiesSaved}</div>
-                    <div className="text-gray-400 text-sm">Penalties Saved</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-green-400 font-bold text-lg">{player.bioData.internationalCaps}</div>
-                    <div className="text-gray-400 text-sm">Int'l Caps</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-red-400 font-bold text-lg">{player.discipline.yellowCards + player.discipline.redCards}</div>
-                    <div className="text-gray-400 text-sm">Total Cards</div>
-                  </div>
-                </div>
-                
-                <div className="mt-6">
-                  <h5 className="text-white font-semibold mb-3">Playing Style</h5>
-                  <div className="flex flex-wrap gap-2">
-                    {player.styleOfPlay.map((style, styleIndex) => (
-                      <span key={styleIndex} className="px-3 py-1 bg-gradient-to-r from-cyan-500/20 to-purple-500/20 text-white text-sm rounded-full border border-white/20">
-                        {style}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            )}
+              </button>
+            ))}
           </div>
-        ))}
+        </div>
+
+        {comparisonData.length > 0 && (
+          <div className="overflow-x-auto">
+            <table className="w-full text-white">
+              <thead>
+                <tr className="border-b border-white/10">
+                  <th className="text-left p-3">Metric</th>
+                  {comparisonData.map(player => (
+                    <th key={player.id} className="text-center p-3">{player.name}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody className="space-y-2">
+                <tr className="border-b border-white/5">
+                  <td className="p-3 text-gray-400">Total Saves</td>
+                  {comparisonData.map(player => (
+                    <td key={player.id} className="p-3 text-center font-semibold">{player.saves}</td>
+                  ))}
+                </tr>
+                <tr className="border-b border-white/5">
+                  <td className="p-3 text-gray-400">Clean Sheets</td>
+                  {comparisonData.map(player => (
+                    <td key={player.id} className="p-3 text-center font-semibold">{player.cleanSheets}</td>
+                  ))}
+                </tr>
+                <tr className="border-b border-white/5">
+                  <td className="p-3 text-gray-400">Penalties Saved</td>
+                  {comparisonData.map(player => (
+                    <td key={player.id} className="p-3 text-center font-semibold">{player.penaltiesSaved}</td>
+                  ))}
+                </tr>
+                <tr className="border-b border-white/5">
+                  <td className="p-3 text-gray-400">Goals Conceded</td>
+                  {comparisonData.map(player => (
+                    <td key={player.id} className="p-3 text-center font-semibold">{player.goalsConceded}</td>
+                  ))}
+                </tr>
+                <tr className="border-b border-white/5">
+                  <td className="p-3 text-gray-400">Errors Leading to Goal</td>
+                  {comparisonData.map(player => (
+                    <td key={player.id} className="p-3 text-center font-semibold">{player.errors}</td>
+                  ))}
+                </tr>
+                <tr>
+                  <td className="p-3 text-gray-400">Total Appearances</td>
+                  {comparisonData.map(player => (
+                    <td key={player.id} className="p-3 text-center font-semibold">{player.totalAppearances}</td>
+                  ))}
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
     </div>
   );

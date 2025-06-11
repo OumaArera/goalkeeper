@@ -4,7 +4,6 @@ import { Link, useLocation } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import { players } from '../data/data';
 import { sponsors } from '../data/sponsors';
-import { leagues } from '../data/leagues';
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -59,7 +58,8 @@ const Header = () => {
     { name: 'Home', path: '/' },
     { name: 'Players', path: '/players' }, 
     { name: 'Statistics', path: '/statistics' },
-    { name: 'Sponsors', path: '/sponsors' },
+    { name: 'Partners', path: '/partners' },
+    { name: 'Our Shop', path: '/our-shop' },
     { name: 'Leagues', path: '/leagues' },
     // { name: 'Reports', path: '/reports' }
   ];

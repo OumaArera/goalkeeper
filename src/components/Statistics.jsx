@@ -1,15 +1,43 @@
-import React, { useState } from "react";
-import { BarChart3, TrendingUp, Users, Trophy } from "lucide-react";
-import { players } from "../data/data";
+import React, { useState, useEffect } from "react";
+import { BarChart3, TrendingUp, Users, Trophy, Loader2 } from "lucide-react";
+import { getData } from "../services/apiServices";
 import OverviewStats from "../services/OverviewStats";
 import PerformanceAnalysis from "../services/PerformanceAnalysis";
 import ClubDistribution from "../services/ClubDistribution";
 import PlayerComparison from "../services/PlayerComparison";
 
 
+
 // Main Statistics Component
 const Statistics = () => {
   const [activeTab, setActiveTab] = useState('overview');
+  const [players, setPlayers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const page = 1;
+  const limit = 20;
+  const isTokenRequired = false;
+  const uRL = `goalkeepers?page=${page}&limit=${limit}`;
+
+
+  useEffect(() => {
+    const fetchPlayers = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const data = await getData(uRL, isTokenRequired);
+        setPlayers(data.data || []);
+      } catch (err) {
+        setError("Failed to load players. Please try again.");
+        console.error("Error fetching players:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPlayers();
+  }, [page, limit]);
 
   const tabs = [
     { id: 'overview', label: 'Overview', icon: BarChart3 },
@@ -17,6 +45,32 @@ const Statistics = () => {
     { id: 'distribution', label: 'Distribution', icon: Users },
     { id: 'comparison', label: 'Comparison', icon: Trophy }
   ];
+
+  const LoadingSpinner = () => (
+    <div className="flex flex-col items-center justify-center min-h-[400px] space-y-4">
+      <Loader2 className="w-12 h-12 text-cyan-400 animate-spin" />
+      <div className="text-white text-lg font-medium">Loading goalkeepers...</div>
+      <div className="text-gray-400 text-sm">Please wait while we fetch the latest data</div>
+    </div>
+  );
+
+  const ErrorMessage = () => (
+    <div className="flex flex-col items-center justify-center min-h-[400px] space-y-4">
+      <div className="text-red-400 text-xl font-semibold">⚠️ Something went wrong</div>
+      <div className="text-gray-300 text-center max-w-md">
+        {error}
+      </div>
+      <button
+        onClick={() => window.location.reload()}
+        className="bg-gradient-to-r from-cyan-500 to-purple-500 text-white py-2 px-6 rounded-lg font-medium transition-all hover:scale-105"
+      >
+        Refresh Page
+      </button>
+    </div>
+  );
+
+  if (loading) return <LoadingSpinner />;
+  if (error) return <ErrorMessage />;
 
   return (
     <div className="relative -top-8 min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-8">

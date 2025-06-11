@@ -1,64 +1,98 @@
-import React, { useState, useMemo } from "react";
-import { Trophy, Users, Search, Filter, Globe, Crown, Star, Target, Calendar, GraduationCap, Building2, School, Medal } from "lucide-react";
-import { leagues } from "../data/leagues";
+import React, { useState, useMemo, useEffect } from "react";
+import { 
+  Trophy, Users, Search, Filter, 
+  Globe, Crown, Star, Target, 
+  Calendar, GraduationCap, 
+  Building2, Medal, ChevronLeft, ChevronRight,
+  Loader2
+} from "lucide-react";
 import LeagueSection from "../services/LeagueSection";
-
+import { getData, createData } from "../services/apiServices";
 
 const Leagues = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCountry, setSelectedCountry] = useState("");
-  const [selectedTier, setSelectedTier] = useState("");
+  const [selectedLevel, setSelectedLevel] = useState("");
   const [selectedSex, setSelectedSex] = useState("");
+  const [leagues, setLeagues] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalLeagues, setTotalLeagues] = useState(0);
+  
+  const limit = 20;
+  const isTokenRequired = false;
 
-  // Get unique countries, tiers, and sex categories
+  const fetchLeagues = async (page = 1) => {
+    try {
+      setLoading(true);
+      setError(null);
+      const url = `leagues?page=${page}&limit=${limit}`;
+      const response = await getData(url, isTokenRequired);
+      
+      setLeagues(response.data || []);
+      setTotalPages(response.totalPages || 1);
+      setTotalLeagues(response.data?.length || 0);
+      setCurrentPage(page);
+    } catch (err) {
+      setError("Failed to load leagues. Please try again.");
+      console.error("Error fetching leagues:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchLeagues(currentPage);
+  }, [currentPage]);
+
+  // Get unique countries, levels, and sex categories
   const filterOptions = useMemo(() => {
     const countries = [...new Set(leagues.map(league => league.country))].sort();
-    const tiers = [...new Set(leagues.map(league => league.tier))].sort();
+    const levels = [...new Set(leagues.map(league => league.level))].sort();
     const sexOptions = [...new Set(leagues.map(league => league.sex))].sort();
     
-    return { countries, tiers, sexOptions };
-  }, []);
+    return { countries, levels, sexOptions };
+  }, [leagues]);
 
   // Filter leagues based on all criteria
   const filteredLeagues = useMemo(() => {
     return leagues.filter(league => {
       const matchesSearch = league.name.toLowerCase().includes(searchTerm.toLowerCase());
       const matchesCountry = selectedCountry === "" || league.country === selectedCountry;
-      
-      // Fix tier comparison - convert both to strings for comparison
-      const matchesTier = selectedTier === "" || String(league.tier) === String(selectedTier);
-      
+      const matchesLevel = selectedLevel === "" || String(league.level) === String(selectedLevel);
       const matchesSex = selectedSex === "" || league.sex === selectedSex;
       
-      return matchesSearch && matchesCountry && matchesTier && matchesSex;
+      return matchesSearch && matchesCountry && matchesLevel && matchesSex;
     });
-  }, [searchTerm, selectedCountry, selectedTier, selectedSex]);
+  }, [leagues, searchTerm, selectedCountry, selectedLevel, selectedSex]);
 
-  // Group leagues by tier for better organization
+  // Group leagues by level for better organization
   const groupedLeagues = useMemo(() => {
     const groups = {
-      professional: [], // tiers 1, 2, 3
-      developmental: [], // tiers 4, 5
-      open: [], // open tier
-      youth: [], // youths tier
+      professional: [], // levels 1, 2, 3
+      developmental: [], // levels 4, 5
+      open: [], // open level
+      youth: [], // youths level
       academic: [], // schools and universities
-      corporate: [] // corporates tier
+      corporate: [] // corporates level
     };
 
     filteredLeagues.forEach(league => {
-      const tier = league.tier;
+      const level = league.level;
       
-      if ([1, 2, 3].includes(tier)) {
+      if (['1', '2', '3'].includes(String(level))) {
         groups.professional.push(league);
-      } else if ([4, 5].includes(tier)) {
+      } else if (['4', '5'].includes(String(level))) {
         groups.developmental.push(league);
-      } else if (tier === 'open') {
+      } else if (String(level).toLowerCase() === 'open') {
         groups.open.push(league);
-      } else if (tier === 'youths') {
+      } else if (String(level).toLowerCase() === 'youth') {
         groups.youth.push(league);
-      } else if (tier === 'schools' || tier === 'universities') {
+      } else if (['schools', 'universities'].includes(String(level).toLowerCase())) {
         groups.academic.push(league);
-      } else if (tier === 'corporates') {
+      } else if (String(level).toLowerCase() === 'corporates') {
         groups.corporate.push(league);
       }
     });
@@ -66,17 +100,60 @@ const Leagues = () => {
     return groups;
   }, [filteredLeagues]);
 
-  // Statistics by tier and sex
+  // Statistics by level and sex
   const statistics = useMemo(() => {
     return {
-      total: leagues.length,
+      total: totalLeagues,
       countries: filterOptions.countries.length,
-      professional: leagues.filter(l => [1, 2, 3].includes(l.tier)).length,
+      professional: leagues.filter(l => ['1', '2', '3'].includes(String(l.level))).length,
       womens: leagues.filter(l => l.sex === 'female').length,
       mixed: leagues.filter(l => l.sex === 'both').length,
-      youth: leagues.filter(l => l.tier === 'youths').length
+      youth: leagues.filter(l => String(l.level).toLowerCase() === 'youth').length
     };
-  }, [filterOptions.countries.length]);
+  }, [leagues, totalLeagues, filterOptions.countries.length]);
+
+  const handlePageChange = (page) => {
+    if (page >= 1 && page <= totalPages && page !== currentPage) {
+      setCurrentPage(page);
+    }
+  };
+
+  const clearFilters = () => {
+    setSearchTerm("");
+    setSelectedCountry("");
+    setSelectedLevel("");
+    setSelectedSex("");
+  };
+
+  if (loading && leagues.length === 0) {
+    return (
+      <div className="relative -top-8 min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="w-12 h-12 text-cyan-400 animate-spin mx-auto mb-4" />
+          <h2 className="text-2xl font-bold text-white mb-2">Loading Leagues</h2>
+          <p className="text-gray-400">Fetching football leagues from around the world...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error && leagues.length === 0) {
+    return (
+      <div className="relative -top-8 min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center">
+        <div className="text-center">
+          <Trophy className="w-16 h-16 text-red-400 mx-auto mb-4" />
+          <h2 className="text-2xl font-bold text-white mb-2">Error Loading Leagues</h2>
+          <p className="text-gray-400 mb-6">{error}</p>
+          <button
+            onClick={() => fetchLeagues(currentPage)}
+            className="bg-cyan-500 hover:bg-cyan-600 text-white px-6 py-3 rounded-lg font-medium transition-colors"
+          >
+            Try Again
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="relative -top-8 min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-8">
@@ -126,17 +203,17 @@ const Leagues = () => {
               <Filter className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5 pointer-events-none" />
             </div>
 
-            {/* Tier Filter */}
+            {/* Level Filter */}
             <div className="relative">
               <select
-                value={selectedTier}
-                onChange={(e) => setSelectedTier(e.target.value)}
+                value={selectedLevel}
+                onChange={(e) => setSelectedLevel(e.target.value)}
                 className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent appearance-none"
               >
-                <option value="">All Tiers</option>
-                {filterOptions.tiers.map(tier => (
-                  <option key={tier} value={tier} className="bg-slate-800">
-                    {typeof tier === 'number' ? `Tier ${tier}` : tier.charAt(0).toUpperCase() + tier.slice(1)}
+                <option value="">All Levels</option>
+                {filterOptions.levels.map(level => (
+                  <option key={level} value={level} className="bg-slate-800">
+                    {isNaN(level) ? level.charAt(0).toUpperCase() + level.slice(1) : `Level ${level}`}
                   </option>
                 ))}
               </select>
@@ -161,13 +238,31 @@ const Leagues = () => {
             </div>
           </div>
 
-          {/* Results Count */}
-          <div className="mt-4 flex justify-center">
+          {/* Results Count and Clear Filters */}
+          <div className="mt-4 flex justify-between items-center">
             <div className="bg-white/10 rounded-lg px-6 py-3 border border-white/20">
               <span className="text-white font-medium">{filteredLeagues.length} Leagues Found</span>
             </div>
+            {(searchTerm || selectedCountry || selectedLevel || selectedSex) && (
+              <button
+                onClick={clearFilters}
+                className="bg-red-500/20 hover:bg-red-500/30 text-red-300 px-4 py-2 rounded-lg font-medium transition-colors border border-red-500/30"
+              >
+                Clear Filters
+              </button>
+            )}
           </div>
         </div>
+
+        {/* Loading Overlay for Pagination */}
+        {loading && leagues.length > 0 && (
+          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center">
+            <div className="bg-white/10 backdrop-blur-lg p-6 rounded-2xl border border-white/20">
+              <Loader2 className="w-8 h-8 text-cyan-400 animate-spin mx-auto mb-2" />
+              <p className="text-white text-center">Loading...</p>
+            </div>
+          </div>
+        )}
 
         {/* Statistics Overview */}
         <div className="grid grid-cols-2 md:grid-cols-6 gap-4 mb-12">
@@ -226,7 +321,7 @@ const Leagues = () => {
             title="Professional Leagues" 
             leagues={groupedLeagues.professional} 
             icon={Crown}
-            description="Top-tier professional football leagues (Tiers 1-3)"
+            description="Top-tier professional football leagues (Levels 1-3)"
           />
         )}
 
@@ -235,7 +330,7 @@ const Leagues = () => {
             title="Developmental Leagues" 
             leagues={groupedLeagues.developmental} 
             icon={Target}
-            description="Lower division and developmental leagues (Tiers 4-5)"
+            description="Lower division and developmental leagues (Levels 4-5)"
           />
         )}
 
@@ -276,11 +371,72 @@ const Leagues = () => {
         )}
 
         {/* No Results Message */}
-        {filteredLeagues.length === 0 && (
+        {filteredLeagues.length === 0 && !loading && (
           <div className="text-center py-16">
             <Trophy className="w-16 h-16 text-gray-400 mx-auto mb-4" />
             <h3 className="text-2xl font-bold text-white mb-2">No Leagues Found</h3>
             <p className="text-gray-400">Try adjusting your search criteria or filters</p>
+          </div>
+        )}
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="bg-black/30 backdrop-blur-lg p-6 rounded-3xl border border-white/10 mt-12">
+            <div className="flex items-center justify-between">
+              <div className="text-gray-400">
+                Page {currentPage} of {totalPages} • {totalLeagues} total leagues
+              </div>
+              
+              <div className="flex items-center space-x-2">
+                <button
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  className="flex items-center space-x-2 px-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white/20 transition-colors"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                  <span>Previous</span>
+                </button>
+                
+                {/* Page Numbers */}
+                <div className="flex items-center space-x-1">
+                  {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                    let pageNum;
+                    if (totalPages <= 5) {
+                      pageNum = i + 1;
+                    } else if (currentPage <= 3) {
+                      pageNum = i + 1;
+                    } else if (currentPage >= totalPages - 2) {
+                      pageNum = totalPages - 4 + i;
+                    } else {
+                      pageNum = currentPage - 2 + i;
+                    }
+                    
+                    return (
+                      <button
+                        key={pageNum}
+                        onClick={() => handlePageChange(pageNum)}
+                        className={`w-10 h-10 rounded-lg font-medium transition-colors ${
+                          currentPage === pageNum
+                            ? 'bg-cyan-500 text-white'
+                            : 'bg-white/10 text-gray-300 hover:bg-white/20'
+                        }`}
+                      >
+                        {pageNum}
+                      </button>
+                    );
+                  })}
+                </div>
+                
+                <button
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                  className="flex items-center space-x-2 px-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white/20 transition-colors"
+                >
+                  <span>Next</span>
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
           </div>
         )}
 
@@ -289,7 +445,7 @@ const Leagues = () => {
           <Calendar className="w-12 h-12 text-cyan-400 mx-auto mb-4" />
           <h3 className="text-2xl font-bold text-white mb-4">Stay Updated</h3>
           <p className="text-gray-300 max-w-2xl mx-auto">
-            Our league database spans across all tiers of football - from professional leagues to youth academies, 
+            Our league database spans across all levels of football - from professional leagues to youth academies, 
             school competitions, and corporate tournaments. Check back regularly for new additions and updates.
           </p>
         </div>

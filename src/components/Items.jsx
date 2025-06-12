@@ -1,14 +1,17 @@
-import React, { useState, useMemo, useEffect } from "react";
-import { ShoppingCart, Package, Loader2, AlertCircle } from "lucide-react";
-import { getData, createData } from "../services/apiServices";
+import React, { useState } from "react";
+import { ShoppingCart, Package } from "lucide-react";
+import { createData } from "../services/apiServices";
 import PlayerItemCardGrid from "./PlayerItemCardGrid";
 import PlayerItemFilters from "./PlayerItemFilters";
-
+import useFetchItems from "../hooks/useFetchItems";
+import { formatPrice, getDiscountedPrice } from '../utils/priceUtils';
+import LoadingScreen from '../components/ui/LoadingScreen';
+import ErrorScreen from '../components/ui/ErrorScreen';
+import { useItemFilters } from '../hooks/useItemFilters';
+import AuthOverlay from "./auth/AuthOverlay";
+import { isLoggedIn } from "../utils/isLoggedIn";
 
 const Items = () => {
-  const [items, setItems] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedBrand, setSelectedBrand] = useState("");
@@ -18,95 +21,49 @@ const Items = () => {
   const [cartLoading, setCartLoading] = useState({});
   const [cartSuccess, setCartSuccess] = useState({});
   const [favorites, setFavorites] = useState(new Set());
-  const [cartItemCount, setCartItemCount] = useState(0); // Track cart items count
+  const [cartItemCount, setCartItemCount] = useState(0);
+  const [showAuthOverlay, setShowAuthOverlay] = useState(false);
 
   const page = 1;
   const limit = 50;
   const isTokenRequired = false;
   const url = `items?page=${page}&limit=${limit}`;
 
-  const fetchItems = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      const data = await getData(url, isTokenRequired);
-      setItems(data.data || []);
-    } catch (err) {
-      setError("Failed to load items. Please try again.");
-      console.error("Error fetching items:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { items, loading, error, fetchItems } = useFetchItems(url, isTokenRequired);
 
-  useEffect(() => {
-    fetchItems();
-  }, []);
 
-  // Get filter options
-  const filterOptions = useMemo(() => {
-    const categories = [...new Set(items.map(item => item.category))].sort();
-    const brands = [...new Set(items.map(item => item.brand))].sort();
-    const teams = [...new Set(items.map(item => item.team).filter(Boolean))].sort();
-    
-    return { categories, brands, teams };
-  }, [items]);
-
-  // Filter and sort items
-  const filteredAndSortedItems = useMemo(() => {
-    let filtered = items.filter(item => {
-      const matchesSearch = item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          item.description.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesCategory = selectedCategory === "" || item.category === selectedCategory;
-      const matchesBrand = selectedBrand === "" || item.brand === selectedBrand;
-      const matchesTeam = selectedTeam === "" || item.team === selectedTeam;
-      const matchesPrice = (priceRange.min === "" || item.price >= parseFloat(priceRange.min)) &&
-                          (priceRange.max === "" || item.price <= parseFloat(priceRange.max));
-      
-      return matchesSearch && matchesCategory && matchesBrand && matchesTeam && matchesPrice;
-    });
-
-    // Sort items
-    filtered.sort((a, b) => {
-      switch (sortBy) {
-        case "price-low":
-          return a.price - b.price;
-        case "price-high":
-          return b.price - a.price;
-        case "name":
-          return a.name.localeCompare(b.name);
-        case "newest":
-          return new Date(b.createdAt) - new Date(a.createdAt);
-        default:
-          return 0;
-      }
-    });
-
-    return filtered;
-  }, [items, searchTerm, selectedCategory, selectedBrand, selectedTeam, priceRange, sortBy]);
+  const { filteredAndSortedItems, filterOptions } = useItemFilters(
+    items, searchTerm, selectedCategory, selectedBrand, selectedTeam, priceRange, sortBy
+  );
 
   // Add to cart function
   const addToCart = async (itemId) => {
-    const payload = {itemId}
-    const url = 'v1/api/items';
-    const isTokenRequired = false;
-    const response = await createData(url, payload, isTokenRequired);
+    const loggedIn = await isLoggedIn();
+    if (!loggedIn) {
+      setShowAuthOverlay(true);
+    } else {
+      const payload = {itemId}
+      const endpoint = 'carts/customer';
+      const isTokenRequired = true;
+      const response = await createData(endpoint, payload, isTokenRequired);
 
-    if (!response.ok) {
-      throw new Error('Failed to add item to cart');
+      if (response.error) {
+        throw new Error('Failed to add item to cart');
+      }
+
+      setCartSuccess(prev => ({ ...prev, [itemId]: true }));
+      setCartItemCount(prev => prev + 1);
+      
+      // Clear success message after 2 seconds
+      setTimeout(() => {
+        setCartSuccess(prev => {
+          const newState = { ...prev };
+          delete newState[itemId];
+          return newState;
+        });
+      }, 2000)
     }
-
-    setCartSuccess(prev => ({ ...prev, [itemId]: true }));
-    setCartItemCount(prev => prev + 1); // Increment cart count
-    
-    // Clear success message after 2 seconds
-    setTimeout(() => {
-      setCartSuccess(prev => {
-        const newState = { ...prev };
-        delete newState[itemId];
-        return newState;
-      });
-    }, 2000);
+    ;
   };
 
   const toggleFavorite = (itemId) => {
@@ -130,52 +87,19 @@ const Items = () => {
     setSortBy("name");
   };
 
-  const formatPrice = (price) => {
-    return new Intl.NumberFormat('en-KE', {
-      style: 'currency',
-      currency: 'KES'
-    }).format(price);
+
+  const handleCartClick = async () => {
+    const loggedIn = await isLoggedIn();
+    if (!loggedIn) {
+      setShowAuthOverlay(true);
+    } else {
+      console.log("Here is Your cart");
+      // Future: open cart sidebar/modal here
+    }
   };
 
-  const getDiscountedPrice = (price, discount) => {
-    return price - (price * discount / 100);
-  };
-
-  // Handle cart icon click - placeholder for future implementation
-  const handleCartClick = () => {
-    console.log("Cart clicked - implement cart view here");
-    // Future implementation: toggle cart sidebar/modal
-  };
-
-  if (loading) {
-    return (
-      <div className="relative -top-8 min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center">
-        <div className="text-center">
-          <Loader2 className="w-12 h-12 text-cyan-400 animate-spin mx-auto mb-4" />
-          <h2 className="text-2xl font-bold text-white mb-2">Loading Items</h2>
-          <p className="text-gray-400">Fetching the latest football merchandise...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="relative -top-8 min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center">
-        <div className="text-center">
-          <AlertCircle className="w-16 h-16 text-red-400 mx-auto mb-4" />
-          <h2 className="text-2xl font-bold text-white mb-2">Error Loading Items</h2>
-          <p className="text-gray-400 mb-6">{error}</p>
-          <button
-            onClick={fetchItems}
-            className="bg-cyan-500 hover:bg-cyan-600 text-white px-6 py-3 rounded-lg font-medium transition-colors"
-          >
-            Try Again
-          </button>
-        </div>
-      </div>
-    );
-  }
+  if (loading) return <LoadingScreen />;
+  if (error) return <ErrorScreen error={error} onRetry={fetchItems} />;
 
   return (
     <div className="relative -top-8 min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-8">
@@ -238,14 +162,14 @@ const Items = () => {
         {/* Items Grid */}
         {filteredAndSortedItems.length > 0 ? (
           <PlayerItemCardGrid
-            items={filteredAndSortedItems} // array of items
-            favorites={favorites} // Set of favorite item IDs
-            toggleFavorite={toggleFavorite} // function to toggle favorite
-            addToCart={addToCart} // function to add item to cart
-            cartLoading={cartLoading} // { [id]: boolean }
-            cartSuccess={cartSuccess} // { [id]: boolean }
-            formatPrice={formatPrice} // function to format price
-            getDiscountedPrice={getDiscountedPrice} // function to calculate discount
+            items={filteredAndSortedItems} 
+            favorites={favorites}
+            toggleFavorite={toggleFavorite}
+            addToCart={addToCart}
+            cartLoading={cartLoading}
+            cartSuccess={cartSuccess}
+            formatPrice={formatPrice}
+            getDiscountedPrice={getDiscountedPrice}
           />
         ) : (
           <div className="text-center py-16">
@@ -265,6 +189,12 @@ const Items = () => {
           </p>
         </div>
       </div>
+      {showAuthOverlay && (
+        <AuthOverlay 
+          isVisible={showAuthOverlay}
+          onClose={() => setShowAuthOverlay(false)} 
+        />
+      )}
     </div>
   );
 };

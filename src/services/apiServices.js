@@ -5,7 +5,7 @@ const buildHeaders = (isTokenRequired) => {
     };
 
     if (isTokenRequired) {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("encryptedSpecialToken");
         if (token) {
             headers["Authorization"] = `Bearer ${token}`;
         }

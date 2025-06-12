@@ -1,4 +1,4 @@
-const BASE_URL = import.meta.env.VITE_BASE_URL;
+const BASE_URL = import.meta.env.VITE_BASE_URL || "https://goalkeepers-server.onrender.com/v1/api";
 const buildHeaders = (isTokenRequired) => {
     const headers = {
         "Content-Type": "application/json",

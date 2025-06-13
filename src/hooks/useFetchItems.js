@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import { getData } from "../services/apiServices";
 
-const useFetchItems = (url, isTokenRequired = false) => {
+const useFetchData = (url, isTokenRequired = false) => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const fetchItems = async () => {
+  const fetchData = async () => {
     try {
       setLoading(true);
       setError(null);
@@ -21,10 +21,10 @@ const useFetchItems = (url, isTokenRequired = false) => {
   };
 
   useEffect(() => {
-    fetchItems();
+    fetchData();
   }, [url]);
 
-  return { items, loading, error, fetchItems };
+  return { items, loading, error, fetchItems: fetchData };
 };
 
-export default useFetchItems;
+export default useFetchData;

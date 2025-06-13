@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import './App.css';
 import Header from './layouts/Header';
 import Footer from './layouts/Footer';
@@ -9,8 +9,11 @@ import Statistics from './components/Statistics';
 import Partners from './components/Partners';
 import Leagues from './components/Leagues';
 import Items from './components/Items';
+import useAutoLogout from './hooks/useAutoLogout';
+
+
 function App() {
-  // const [count, setCount] = useState(0)
+  useAutoLogout()
 
   return (
     <Router>
@@ -23,7 +26,6 @@ function App() {
             <Route path="/statistics" element={<Statistics />} />
             <Route path="/partners" element={<Partners />} />
             <Route path="/our-shop" element={<Items />} />
-            
             <Route path="/leagues" element={<Leagues />} />
           </Routes>
         </main>

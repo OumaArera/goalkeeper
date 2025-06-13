@@ -3,13 +3,14 @@ import { ShoppingCart, Package } from "lucide-react";
 import { createData } from "../services/apiServices";
 import PlayerItemCardGrid from "./PlayerItemCardGrid";
 import PlayerItemFilters from "./PlayerItemFilters";
-import useFetchItems from "../hooks/useFetchItems";
+import useFetchData from "../hooks/useFetchItems";
 import { formatPrice, getDiscountedPrice } from '../utils/priceUtils';
 import LoadingScreen from '../components/ui/LoadingScreen';
 import ErrorScreen from '../components/ui/ErrorScreen';
 import { useItemFilters } from '../hooks/useItemFilters';
 import AuthOverlay from "./auth/AuthOverlay";
 import { isLoggedIn } from "../utils/isLoggedIn";
+import Cart from "./Cart";
 
 const Items = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -18,18 +19,18 @@ const Items = () => {
   const [selectedTeam, setSelectedTeam] = useState("");
   const [priceRange, setPriceRange] = useState({ min: "", max: "" });
   const [sortBy, setSortBy] = useState("name");
-  const [cartLoading, setCartLoading] = useState({});
   const [cartSuccess, setCartSuccess] = useState({});
   const [favorites, setFavorites] = useState(new Set());
   const [cartItemCount, setCartItemCount] = useState(0);
   const [showAuthOverlay, setShowAuthOverlay] = useState(false);
+  const [showCart, setShowCart] = useState(false);
 
   const page = 1;
   const limit = 50;
   const isTokenRequired = false;
   const url = `items?page=${page}&limit=${limit}`;
 
-  const { items, loading, error, fetchItems } = useFetchItems(url, isTokenRequired);
+  const { items, loading, error, fetchItems } = useFetchData(url, isTokenRequired);
 
 
   const { filteredAndSortedItems, filterOptions } = useItemFilters(
@@ -92,8 +93,11 @@ const Items = () => {
     const loggedIn = await isLoggedIn();
     if (!loggedIn) {
       setShowAuthOverlay(true);
+      setShowCart(false);
     } else {
       console.log("Here is Your cart");
+      setShowCart(true);
+      setShowAuthOverlay(false);
       // Future: open cart sidebar/modal here
     }
   };
@@ -166,7 +170,6 @@ const Items = () => {
             favorites={favorites}
             toggleFavorite={toggleFavorite}
             addToCart={addToCart}
-            cartLoading={cartLoading}
             cartSuccess={cartSuccess}
             formatPrice={formatPrice}
             getDiscountedPrice={getDiscountedPrice}
@@ -193,6 +196,13 @@ const Items = () => {
         <AuthOverlay 
           isVisible={showAuthOverlay}
           onClose={() => setShowAuthOverlay(false)} 
+          onLogin={setShowCart}
+        />
+      )}
+      {showCart && (
+        <Cart 
+          isVisible={showCart}
+          onClose={() => setShowCart(false)} 
         />
       )}
     </div>

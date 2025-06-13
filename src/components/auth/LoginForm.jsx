@@ -7,7 +7,7 @@ import { createData } from '../../services/apiServices';
 import encryptionService from '../../services/Encryption';
 
 
-const LoginForm = ({ onToggleForm, onClose }) => {
+const LoginForm = ({ onToggleForm, onClose, onLogin }) => {
   const [formData, setFormData] = useState({
     phoneNumber: '',
     password: '',
@@ -67,10 +67,12 @@ const LoginForm = ({ onToggleForm, onClose }) => {
         setTimeout(() => setResponseMessage(''), 5000);
       } else {
         setResponseMessage('Login successful!');
+        onLogin(true);
         setTimeout(() => {
           setResponseMessage('');
           onClose();
-        }, 2000);
+          // onLogin(true);
+        }, 0);
         const encryptedToken = response?.token;
         const decrypted = await encryptionService.decrypt(encryptedToken);
         const decoded = jwtDecode(decrypted);
@@ -100,28 +102,42 @@ const LoginForm = ({ onToggleForm, onClose }) => {
 
       <div className="space-y-4">
         <div>
-  <label className="block font-semibold mb-2 text-gray-700">Phone Number*</label>
-  <PhoneInput
-    country={'ke'} // default country: Kenya
-    value={formData.phoneNumber}
-    onChange={(phone) => {
-      setFormData((prev) => ({ ...prev, phoneNumber: `+${phone}` }));
-      setErrors((prev) => ({ ...prev, phoneNumber: '' }));
-      setResponseMessage('');
-    }}
-    inputClass="!w-full !py-3 !px-4 !border !border-gray-300 !rounded-lg"
-    inputStyle={{ width: '100%' }}
-    containerClass="!w-full"
-    specialLabel=""
-    enableSearch={true}
-    countryCodeEditable={false}
-    placeholder="Enter phone number"
-  />
-  {errors.phoneNumber && (
-    <p className="text-sm text-red-500 mt-1">{errors.phoneNumber}</p>
-  )}
-</div>
-
+          <label className="block font-semibold mb-2 text-gray-700">Phone Number*</label>
+          <PhoneInput
+            country={'ke'}
+            value={formData.phoneNumber}
+            onChange={(phone) => {
+              setFormData((prev) => ({ ...prev, phoneNumber: `+${phone}` }));
+              setErrors((prev) => ({ ...prev, phoneNumber: '' }));
+              setResponseMessage('');
+            }}
+            inputStyle={{
+              width: '100%',
+              height: '48px',
+              paddingLeft: '50px',
+              border: '1px solid #D1D5DB',
+              borderRadius: '0.5rem',
+              fontSize: '1rem',
+              boxSizing: 'border-box',
+            }}
+            containerStyle={{ width: '100%' }}
+            buttonStyle={{
+              borderTopLeftRadius: '0.5rem',
+              borderBottomLeftRadius: '0.5rem',
+              borderRight: '1px solid #D1D5DB',
+            }}
+            dropdownStyle={{
+              borderRadius: '0.5rem',
+            }}
+            specialLabel=""
+            enableSearch={true}
+            countryCodeEditable={false}
+            placeholder="Enter phone number"
+          />
+          {errors.phoneNumber && (
+            <p className="text-sm text-red-500 mt-1">{errors.phoneNumber}</p>
+          )}
+        </div>
         <div className="relative">
           <label className="block font-semibold mb-2 text-gray-700">Password*</label>
           <input

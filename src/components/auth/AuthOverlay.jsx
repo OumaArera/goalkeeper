@@ -3,7 +3,7 @@ import { X } from 'lucide-react';
 import LoginForm from "./LoginForm";
 import SignupForm from "./SignupForm";
 
-const AuthOverlay = ({ isVisible, onClose }) => {
+const AuthOverlay = ({ isVisible, onClose, onLogin }) => {
   const [isLogin, setIsLogin] = useState(true);
 
   const toggleForm = () => {
@@ -25,7 +25,7 @@ const AuthOverlay = ({ isVisible, onClose }) => {
         </button>
 
         {isLogin ? (
-          <LoginForm onToggleForm={toggleForm} onClose={onClose} />
+          <LoginForm onToggleForm={toggleForm} onClose={onClose} onLogin={onLogin} />
         ) : (
           <SignupForm onToggleForm={toggleForm} onClose={onClose} />
         )}

@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff, Loader2 } from 'lucide-react';
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
 import { createData } from '../../services/apiServices';
 
 const SignupForm = ({ onToggleForm, onClose }) => {
@@ -26,11 +28,11 @@ const SignupForm = ({ onToggleForm, onClose }) => {
     if (!formData.firstName.trim()) newErrors.firstName = 'First name is required';
     if (!formData.lastName.trim()) newErrors.lastName = 'Last name is required';
 
-    if (!formData.phoneNumber.trim()) {
-      newErrors.phoneNumber = 'Phone number is required';
-    } else if (!/^\+\d{10,15}$/.test(formData.phoneNumber)) {
-      newErrors.phoneNumber = 'Invalid phone format. Use +254712345678';
-    }
+    // if (!formData.phoneNumber.trim()) {
+    //   newErrors.phoneNumber = 'Phone number is required';
+    // } else if (!/^\+\d{10,15}$/.test(formData.phoneNumber)) {
+    //   newErrors.phoneNumber = 'Invalid phone format. Use +254712345678';
+    // }
 
     if (!formData.password.trim()) {
       newErrors.password = 'Password is required';
@@ -60,12 +62,15 @@ const SignupForm = ({ onToggleForm, onClose }) => {
 
     setLoading(true);
     try {
-      const payload = { ...formData };
+      const { email, ...rest } = formData;
+      const payload = email ? { ...rest, email } : { ...rest };
+
+      console.log("Payload: ", payload);
       const endpoint = "customers/auth/signup";
       const isTokenRequired = false;
 
       const response = await createData(endpoint, payload, isTokenRequired);
-
+      console.log("Response: ", response.error);
       if (response.error) {
         setResponseMessage(response.error);
         setTimeout(() => setResponseMessage(""), 5000);
@@ -74,7 +79,7 @@ const SignupForm = ({ onToggleForm, onClose }) => {
         setResponseMessage('Account created successfully!');
         setTimeout(() => {
           setResponseMessage("");
-          onToggleForm(); // Switch to login form after successful signup
+          onToggleForm(); 
         }, 2000);
       }
       
@@ -99,6 +104,7 @@ const SignupForm = ({ onToggleForm, onClose }) => {
             <input
               type="text"
               name="firstName"
+              placeholder='Your first name...'
               value={formData.firstName}
               onChange={handleChange}
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition-colors"
@@ -114,6 +120,7 @@ const SignupForm = ({ onToggleForm, onClose }) => {
             <input
               type="text"
               name="lastName"
+              placeholder='Your last name...'
               value={formData.lastName}
               onChange={handleChange}
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition-colors"
@@ -127,25 +134,50 @@ const SignupForm = ({ onToggleForm, onClose }) => {
 
         <div>
           <label className="block font-semibold mb-2 text-gray-700">Phone Number*</label>
-          <input
-            type="tel"
-            name="phoneNumber"
+          <PhoneInput
+            country={'ke'}
             value={formData.phoneNumber}
-            onChange={handleChange}
-            placeholder="+254712345678"
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition-colors"
-            required
+            onChange={(phone) => {
+              setFormData((prev) => ({ ...prev, phoneNumber: `+${phone}` }));
+              setErrors((prev) => ({ ...prev, phoneNumber: '' }));
+              setResponseMessage('');
+            }}
+            inputStyle={{
+              width: '100%',
+              height: '48px',
+              paddingLeft: '52px',
+              paddingRight: '16px',
+              border: '1px solid #D1D5DB',
+              borderRadius: '0.5rem',
+              fontSize: '1rem',
+              outline: 'none',
+              boxShadow: 'none',
+            }}
+            containerStyle={{ width: '100%' }}
+            buttonStyle={{
+              borderTopLeftRadius: '0.5rem',
+              borderBottomLeftRadius: '0.5rem',
+              borderRight: '1px solid #D1D5DB',
+              backgroundColor: '#ffffff',
+            }}
+            dropdownStyle={{
+              borderRadius: '0.5rem',
+            }}
+            specialLabel=""
+            enableSearch={true}
+            countryCodeEditable={false}
+            placeholder="Enter phone number"
           />
           {errors.phoneNumber && (
             <p className="text-sm text-red-500 mt-1">{errors.phoneNumber}</p>
           )}
         </div>
-
         <div>
           <label className="block font-semibold mb-2 text-gray-700">Email</label>
           <input
             type="email"
             name="email"
+            placeholder='Your email address(Optional)'
             value={formData.email}
             onChange={handleChange}
             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition-colors"
@@ -178,7 +210,7 @@ const SignupForm = ({ onToggleForm, onClose }) => {
         {responseMessage && (
           <div
             className={`text-center text-sm font-medium p-3 rounded-lg ${
-              responseMessage.includes('successful')
+              responseMessage
                 ? 'text-green-700 bg-green-50 border border-green-200'
                 : 'text-red-700 bg-red-50 border border-red-200'
             }`}

@@ -46,7 +46,7 @@ export const createData = async (endpoint, newData, isTokenRequired = true) => {
 
         const data = await response.json();
         if (!response.ok) {
-            return { error: data?.error || "Failed to create data" };
+            return { error: data?.error || data?.errors || "Failed to create data" };
         }
 
         return data;

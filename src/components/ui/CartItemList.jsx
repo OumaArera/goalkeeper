@@ -1,7 +1,8 @@
 import React from 'react';
 import logo from '../../assets/goalkeeper.jpg';
+import { Loader2 } from 'lucide-react';
 
-const CartItemList = ({ items = [], handleRemoveItem }) => {
+const CartItemList = ({ items = [], handleRemoveItem, removingItemId }) => {
   return (
     <div className="divide-y divide-gray-200">
       {items.map((cartItem) => (
@@ -91,12 +92,18 @@ const CartItemList = ({ items = [], handleRemoveItem }) => {
             </span>
 
             {/* Remove Button */}
-            <button
-              onClick={() => handleRemoveItem(cartItem.id)}
-              className="text-red-600 hover:text-red-800 text-sm font-medium transition-colors"
-            >
-              Remove
-            </button>
+            {removingItemId === cartItem.id ? (
+              <div className="flex items-center justify-center w-5 h-5">
+                <Loader2 className="animate-spin w-4 h-4 text-red-600" />
+              </div>
+            ) : (
+              <button
+                onClick={() => handleRemoveItem(cartItem.id)}
+                className="text-red-600 hover:text-red-800 text-sm font-medium transition-colors"
+              >
+                Remove
+              </button>
+            )}
           </div>
         </div>
       ))}

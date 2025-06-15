@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-const INACTIVITY_TIMEOUT = 600 * 1000;
+const INACTIVITY_TIMEOUT = 1200 * 1000;
 
 const useAutoLogout = () => {
   const timerId = useRef(null);

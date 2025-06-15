@@ -35,6 +35,28 @@ export const updateData = async (endpoint, updatedData, isTokenRequired = true) 
     }
 };
 
+export const createFormData = async (endpoint, newData) => {
+    const completeURL = `${BASE_URL}/${endpoint}`;
+
+    try {
+        const response = await fetch(completeURL, {
+            method: "POST",
+            body: newData,
+        });
+
+        const data = await response.json();
+        if (!response.ok) {
+            return { error: data?.error || data?.errors || "Failed to create data" };
+        }
+
+        return data;
+    } catch (error) {
+        console.error("Error creating data:", error);
+        return { error: "An unexpected error occurred while creating." };
+    }
+};
+
+
 export const createData = async (endpoint, newData, isTokenRequired = true) => {
     const completeURL = `${BASE_URL}/${endpoint}`;
     try {
@@ -46,6 +68,7 @@ export const createData = async (endpoint, newData, isTokenRequired = true) => {
 
         const data = await response.json();
         if (!response.ok) {
+            console.log("Response: ", response);
             return { error: data?.error || data?.errors || "Failed to create data" };
         }
 

@@ -4,6 +4,7 @@ import { Link, useLocation } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import { players } from '../data/data';
 import { sponsors } from '../data/sponsors';
+import NewPlayer from '../components/NewPlayer';
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -54,6 +55,14 @@ const Header = () => {
     };
   }, [isMobileMenuOpen]);
 
+  // Prevent body scroll when dialog is open
+  useEffect(() => {
+    document.body.style.overflow = showComingSoonDialog ? 'hidden' : 'auto';
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [showComingSoonDialog]);
+
   const navLinks = [
     { name: 'Home', path: '/' },
     { name: 'Players', path: '/players' }, 
@@ -61,7 +70,7 @@ const Header = () => {
     { name: 'Partners', path: '/partners' },
     { name: 'Our Shop', path: '/our-shop' },
     { name: 'Leagues', path: '/leagues' },
-    // { name: 'Reports', path: '/reports' }
+    // { name: 'New Player', path: '/new-player' }
   ];
 
   // Get active link based on current location
@@ -88,6 +97,22 @@ const Header = () => {
   const closeDialog = () => {
     setShowComingSoonDialog(false);
   };
+
+  // Handle ESC key to close dialog
+  useEffect(() => {
+    const handleEscKey = (event) => {
+      if (event.key === 'Escape') {
+        if (showComingSoonDialog) {
+          closeDialog();
+        } else if (isMobileMenuOpen) {
+          closeMobileMenu();
+        }
+      }
+    };
+
+    document.addEventListener('keydown', handleEscKey);
+    return () => document.removeEventListener('keydown', handleEscKey);
+  }, [showComingSoonDialog, isMobileMenuOpen]);
 
   return (
     <>
@@ -152,7 +177,7 @@ const Header = () => {
                   onClick={handleAddPlayer}
                   className="px-3 py-2 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white font-medium text-md rounded-lg shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 hover:from-emerald-500 hover:to-emerald-600 transform hover:-translate-y-0.5 transition-all duration-200"
                 >
-                  👤 Add Player
+                  👤 Join Us
                 </button>
               </div>
             </div>
@@ -205,7 +230,6 @@ const Header = () => {
             ))}
           </div>
 
-
           {/* Mobile Action Buttons */}
           <div className="space-y-3">
             <button 
@@ -215,13 +239,13 @@ const Header = () => {
               }}
               className="w-full px-4 py-3 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white font-medium rounded-lg shadow-lg shadow-emerald-500/25"
             >
-              👤 Add Player
+              👤 Join Us
             </button>
           </div>
         </div>
       </div>
 
-      {/* Overlay */}
+      {/* Mobile Menu Overlay */}
       {isMobileMenuOpen && (
         <div
           className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
@@ -229,27 +253,31 @@ const Header = () => {
         />
       )}
 
-      {/* Coming Soon Dialog */}
+      {/* NewPlayer Dialog Overlay */}
       {showComingSoonDialog && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-slate-800 border border-emerald-500/20 rounded-2xl p-6 max-w-sm w-full shadow-2xl shadow-emerald-500/10">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-emerald-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl">🚀</span>
-              </div>
-              <h3 className="text-xl font-bold text-white mb-2">Coming Soon!</h3>
-              <p className="text-gray-400 mb-6">
-                The Add Player feature is currently under development. Stay tuned for updates!
-              </p>
-              <button 
-                onClick={closeDialog}
-                className="w-full px-4 py-2 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white font-medium rounded-lg hover:from-emerald-500 hover:to-emerald-600 transition-all duration-200"
-              >
-                Got it!
-              </button>
-            </div>
+          <div className="relative w-full max-w-4xl max-h-[90vh] overflow-auto">
+            {/* Close button in top-right corner */}
+            <button
+              onClick={closeDialog}
+              className="absolute top-4 right-4 z-10 p-2 bg-slate-800/80 hover:bg-slate-700/80 text-white rounded-full transition-colors duration-200 backdrop-blur-sm"
+              aria-label="Close dialog"
+            >
+              <X className="h-5 w-5" />
+            </button>
+            
+            {/* Pass close handler to NewPlayer component */}
+            <NewPlayer onClose={closeDialog} />
           </div>
         </div>
+      )}
+
+      {/* Dialog Backdrop - Click to close */}
+      {showComingSoonDialog && (
+        <div
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
+          onClick={closeDialog}
+        />
       )}
 
       {/* Spacer to prevent content from hiding behind fixed header */}

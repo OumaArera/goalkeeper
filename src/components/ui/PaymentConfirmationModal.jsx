@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, Phone, CreditCard } from 'lucide-react';
+import { X, Phone, CreditCard, User } from 'lucide-react';
 
 const PaymentConfirmationModal = ({
   setShowPaymentModal,
@@ -12,6 +12,11 @@ const PaymentConfirmationModal = ({
   placeOrder,
 }) => {
   if (!selectedOrder) return null;
+
+  // Check if this modal needs to collect fullName
+  const needsFullName = selectedOrder.hasOwnProperty('fullName');
+  const fullName = selectedOrder.fullName || '';
+  const setFullName = selectedOrder.setFullName;
 
   // Handle phone number input - only allow digits and prevent + symbol
   const handlePhoneChange = (e) => {
@@ -28,9 +33,23 @@ const PaymentConfirmationModal = ({
     }
   };
 
+  // Handle full name input
+  const handleFullNameChange = (e) => {
+    if (setFullName) {
+      setFullName(e.target.value);
+    }
+  };
+
   // Format the complete phone number for display and submission
   const getCompletePhoneNumber = () => {
     return phoneNumber ? `254${phoneNumber}` : '254';
+  };
+
+  // Check if form is valid
+  const isFormValid = () => {
+    const phoneValid = phoneNumber.trim() && phoneNumber.length === 9;
+    const nameValid = needsFullName ? fullName.trim() : true;
+    return phoneValid && nameValid;
   };
 
   return (
@@ -60,7 +79,36 @@ const PaymentConfirmationModal = ({
                 KSh {parseFloat(selectedOrder.grandTotal).toLocaleString()}
               </span>
             </div>
+            {/* Show additional ticket details if available */}
+            {selectedOrder.match && (
+              <div className="mt-2 pt-2 border-t border-gray-200">
+                <div className="text-xs text-gray-500">
+                  <div>{selectedOrder.match}</div>
+                  {selectedOrder.venue && <div>{selectedOrder.venue}</div>}
+                  {selectedOrder.category && <div>Category: {selectedOrder.category}</div>}
+                </div>
+              </div>
+            )}
           </div>
+
+          {/* Full Name Input (only if needed) */}
+          {needsFullName && (
+            <div className="mb-4">
+              <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 mb-2">
+                <User className="w-4 h-4 inline mr-1" />
+                Full Name
+              </label>
+              <input
+                type="text"
+                id="fullName"
+                value={fullName}
+                onChange={handleFullNameChange}
+                placeholder="Enter your full name"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                disabled={isProcessing}
+              />
+            </div>
+          )}
 
           {/* Phone Input */}
           <div className="mb-4">
@@ -118,7 +166,7 @@ const PaymentConfirmationModal = ({
             </button>
             <button
               onClick={placeOrder}
-              disabled={isProcessing || !phoneNumber.trim() || phoneNumber.length !== 9}
+              disabled={isProcessing || !isFormValid()}
               className="flex-1 bg-green-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
             >
               {isProcessing ? (

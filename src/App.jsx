@@ -10,6 +10,7 @@ import Partners from './components/Partners';
 import Leagues from './components/Leagues';
 import Items from './components/Items';
 import useAutoLogout from './hooks/useAutoLogout';
+import Tickets from './components/Tickets';
 
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
             <Route path="/partners" element={<Partners />} />
             <Route path="/our-shop" element={<Items />} />
             <Route path="/leagues" element={<Leagues />} />
+            <Route path="/game-tickets" element={<Tickets />} />
           </Routes>
         </main>
         <Footer />

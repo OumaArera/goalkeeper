@@ -69,8 +69,8 @@ const Header = () => {
     { name: 'Statistics', path: '/statistics' },
     { name: 'Partners', path: '/partners' },
     { name: 'Our Shop', path: '/our-shop' },
+    { name: 'Game Tickets', path: '/game-tickets' },
     { name: 'Leagues', path: '/leagues' },
-    // { name: 'New Player', path: '/new-player' }
   ];
 
   // Get active link based on current location

@@ -1,14 +1,16 @@
 import React, { useState } from "react";
-import { Calendar, MapPin, Clock, Ticket, Users, Star, Download } from "lucide-react";
+import { Ticket, Users, Search } from "lucide-react";
 import { createData } from "../services/apiServices";
 import ErrorScreen from "./ui/ErrorScreen";
 import LoadingScreen from "./ui/LoadingScreen";
 import useFetchData from "../hooks/useFetchItems";
 import PaymentConfirmationModal from './ui/PaymentConfirmationModal';
 import TicketGrid from "./ui/TicketGrid";
+import QueryTicket from "./QueryTicket";
 import { formatDate, formatTime } from "../utils/getTotalStats";
 
 const Tickets = () => {
+  const [activeTab, setActiveTab] = useState("buy"); // "buy" or "verify"
   const [selectedTicket, setSelectedTicket] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
@@ -75,6 +77,7 @@ const Tickets = () => {
         eventId: selectedTicket.id,
         phoneNumber: `254${phoneNumber}`,
         category: selectedCategory.category,
+        // amount: selectedCategory.price,
         amount: 1,
         fullName: fullName
       };
@@ -101,14 +104,13 @@ const Tickets = () => {
     }
   };
 
-
-  if (loading) return <LoadingScreen />;
-  if (error) return <ErrorScreen error={error} onRetry={fetchItems} />;
+  if (loading && activeTab === "buy") return <LoadingScreen />;
+  if (error && activeTab === "buy") return <ErrorScreen error={error} onRetry={fetchItems} />;
 
   return (
     <div className="relative -top-8 min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-8">
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
+        {/* Header with Navigation Tabs */}
         <div className="text-center mb-12">
           <div className="flex items-center justify-center space-x-3 mb-6">
             <Ticket className="w-10 h-10 text-yellow-400" />
@@ -121,40 +123,80 @@ const Tickets = () => {
               Tickets
             </span>
           </h1>
-          <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-            Get your tickets for the most exciting football matches
+          <p className="text-xl text-gray-300 max-w-2xl mx-auto mb-8">
+            Get your tickets for the most exciting football matches or verify existing tickets
           </p>
+
+          {/* Tab Navigation */}
+          <div className="flex justify-center mb-8">
+            <div className="bg-black/20 backdrop-blur-lg p-2 rounded-2xl border border-white/10">
+              <div className="flex space-x-2">
+                <button
+                  onClick={() => setActiveTab("buy")}
+                  className={`px-6 py-3 rounded-xl font-semibold transition-all duration-200 flex items-center space-x-2 ${
+                    activeTab === "buy"
+                      ? "bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg"
+                      : "text-gray-300 hover:text-white hover:bg-white/10"
+                  }`}
+                >
+                  <Ticket className="w-5 h-5" />
+                  <span>Buy Tickets</span>
+                </button>
+                <button
+                  onClick={() => setActiveTab("verify")}
+                  className={`px-6 py-3 rounded-xl font-semibold transition-all duration-200 flex items-center space-x-2 ${
+                    activeTab === "verify"
+                      ? "bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg"
+                      : "text-gray-300 hover:text-white hover:bg-white/10"
+                  }`}
+                >
+                  <Search className="w-5 h-5" />
+                  <span>Verify Ticket</span>
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
 
-        {/* Tickets Grid */}
-        {items && items.length > 0 ? (
-          <TicketGrid
-            items={items}
-            imageLoadingStates={imageLoadingStates}
-            handleImageLoad={handleImageLoad}
-            handleImageError={handleImageError}
-            handleImageLoadStart={handleImageLoadStart}
-            handleBuyTicket={handleBuyTicket}
-            formatDate={formatDate}
-            formatTime={formatTime}
-          />
+        {/* Tab Content */}
+        {activeTab === "buy" ? (
+          <>
+            {/* Buy Tickets Content */}
+            {items && items.length > 0 ? (
+              <TicketGrid
+                items={items}
+                imageLoadingStates={imageLoadingStates}
+                handleImageLoad={handleImageLoad}
+                handleImageError={handleImageError}
+                handleImageLoadStart={handleImageLoadStart}
+                handleBuyTicket={handleBuyTicket}
+                formatDate={formatDate}
+                formatTime={formatTime}
+              />
+            ) : (
+              <div className="text-center py-16">
+                <Ticket className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                <h3 className="text-2xl font-bold text-white mb-2">No Tickets Available</h3>
+                <p className="text-gray-400">Check back later for upcoming matches</p>
+              </div>
+            )}
+
+            {/* Footer */}
+            <div className="bg-black/30 backdrop-blur-lg p-8 rounded-3xl border border-white/10 text-center mt-12">
+              <Ticket className="w-12 h-12 text-cyan-400 mx-auto mb-4" />
+              <h3 className="text-2xl font-bold text-white mb-4">Premium Match Experience</h3>
+              <p className="text-gray-300 max-w-2xl mx-auto">
+                Secure your spot for the most exciting football matches. All tickets are authenticated 
+                and delivered instantly to your phone via M-Pesa.
+              </p>
+            </div>
+          </>
         ) : (
-          <div className="text-center py-16">
-            <Ticket className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-2xl font-bold text-white mb-2">No Tickets Available</h3>
-            <p className="text-gray-400">Check back later for upcoming matches</p>
+          /* Verify Ticket Content */
+          <div className="relative -top-12">
+            <QueryTicket />
           </div>
         )}
-
-        {/* Footer */}
-        <div className="bg-black/30 backdrop-blur-lg p-8 rounded-3xl border border-white/10 text-center">
-          <Ticket className="w-12 h-12 text-cyan-400 mx-auto mb-4" />
-          <h3 className="text-2xl font-bold text-white mb-4">Premium Match Experience</h3>
-          <p className="text-gray-300 max-w-2xl mx-auto">
-            Secure your spot for the most exciting football matches. All tickets are authenticated 
-            and delivered instantly to your phone via M-Pesa.
-          </p>
-        </div>
       </div>
 
       {/* Payment Modal */}

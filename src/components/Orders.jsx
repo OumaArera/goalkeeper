@@ -41,7 +41,8 @@ const Orders = ({ items, loading, error, fetchItems }) => {
     const payload = {
       orderId: selectedOrder.id,
       phoneNumber: completePhoneNumber,
-      amount: parseFloat(selectedOrder.grandTotal)
+      // amount: parseFloat(selectedOrder.grandTotal)
+      amount: 1
     };
 
     try {

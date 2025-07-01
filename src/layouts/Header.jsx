@@ -143,7 +143,7 @@ const Header = () => {
                   GOALKEEPERS ALLIANCE
                 </h1>
                 <p className="hidden md:block text-md sm:text-md text-gray-400 font-medium">
-                  Elite Goalkeeper Database & Analytics Platform
+                 Data-Driven. Globally Connected. Keeper-Focused.
                 </p>
               </div>
             </Link>

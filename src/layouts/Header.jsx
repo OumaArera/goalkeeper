@@ -132,7 +132,7 @@ const Header = () => {
             <Link to="/" className="flex items-center space-x-3 group">
               <div className="w-14 h-14 sm:w-12 sm:h-12 bg-black rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/20 transform transition-transform group-hover:scale-105">
                 <img
-                  src={logo}
+                  src='/logo.png'
                   alt="SafeStack Logo"
                   className="w-10 h-10 sm:w-12 sm:h-12 object-contain"
                 />

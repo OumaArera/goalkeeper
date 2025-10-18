@@ -46,7 +46,7 @@ const Footer = () => {
               <div className="w-16 h-16 sm:w-18 sm:h-18 lg:w-20 lg:h-20 bg-black rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/20 transform transition-transform hover:scale-105">
                 <div className="w-14 h-14 sm:w-12 sm:h-12 bg-black rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/20 transform transition-transform group-hover:scale-105">
                   <img
-                  src={logo}
+                  src='/logo.png'
                   alt="SafeStack Logo"
                   className="w-10 h-10 sm:w-12 sm:h-12 object-contain"
                 />
